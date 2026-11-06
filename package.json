@@ -1,0 +1,13 @@
+{
+  "name": "rentconnect-ethiopia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A simple rental listing website for Ethiopia.",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check public/js/app.js && node --check public/js/admin.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

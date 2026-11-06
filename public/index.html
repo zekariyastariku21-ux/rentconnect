@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RentConnect Ethiopia | Find Your Rental Home</title>
+<meta name="description" content="Find apartments, houses, villas, studios and rooms for rent in Ethiopia.">
+<link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">RentConnect <span>Ethiopia</span></div>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#properties">Properties</a>
+      <a href="#owners">For Owners</a>
+      <a href="./admin.html">Admin</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-outline" onclick="alert('Login page coming soon')">Login</button>
+      <button class="btn btn-primary" onclick="alert('Registration page coming soon')">Register</button>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <h1>Find Your Perfect Rental Home in Ethiopia</h1>
+    <p>Apartments, houses, villas, studios, rooms and more.<br>Browse available rentals across Ethiopia.</p>
+  </div>
+</section>
+
+<main id="properties">
+  <h2>Browse Property Categories</h2>
+  <div class="category-row" id="categoryButtons">
+    <button class="category active" data-category="">All Properties</button>
+    <button class="category" data-category="Apartment">Apartments</button>
+    <button class="category" data-category="House">Houses</button>
+    <button class="category" data-category="Villa">Villas</button>
+    <button class="category" data-category="Studio">Studios</button>
+    <button class="category" data-category="Room">Rooms</button>
+    <button class="category" data-category="Shared Housing">Shared Housing</button>
+  </div>
+
+  <div class="content filters-hidden">
+    <aside class="filters" id="filters">
+      <div class="filter-controls">
+        <div class="filter-group">
+          <label class="title">Minimum Price (ETB)</label>
+          <input type="number" id="minFilter" placeholder="e.g. 5,000">
+        </div>
+        <div class="filter-group">
+          <label class="title">Maximum Price (ETB)</label>
+          <input type="number" id="maxFilter" placeholder="e.g. 50,000">
+        </div>
+        <div class="filter-group">
+          <label class="title">City</label>
+          <select id="cityFilter">
+            <option value="">All Cities</option>
+            <option>Addis Ababa</option><option>Adama</option>
+            <option>Bahir Dar</option><option>Hawassa</option>
+            <option>Dire Dawa</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="title">Neighborhood / Address</label>
+          <input id="areaFilter" placeholder="e.g. Bole">
+        </div>
+        <div class="filter-group">
+          <label class="title">Bedrooms</label>
+          <select id="bedFilter">
+            <option value="">Any</option>
+            <option value="1">1+</option><option value="2">2+</option>
+            <option value="3">3+</option><option value="4">4+</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+        <button class="btn btn-outline" onclick="resetFilters()">Clear Filters</button>
+      </div>
+    </aside>
+
+    <section>
+      <div class="results-top">
+        <h2 id="resultCount">Available Properties</h2>
+        <button class="btn btn-outline filter-toggle" id="filterToggle" type="button" aria-controls="filters" aria-label="Toggle filters" aria-expanded="false" onclick="toggleFilters()">Filter</button>
+        <select id="sort" onchange="renderProperties()" style="padding:10px;border:1px solid var(--border);border-radius:8px">
+          <option value="newest">Newest First</option>
+          <option value="low">Price: Low to High</option>
+          <option value="high">Price: High to Low</option>
+        </select>
+      </div>
+      <div class="property-grid" id="propertyGrid"></div>
+    </section>
+  </div>
+
+  <section class="owner-banner" id="owners">
+    <div>
+      <p class="owner-eyebrow">FOR PROPERTY OWNERS</p>
+      <h2>Have a property to rent?</h2>
+      <p>List your rental and connect with renters across Ethiopia.</p>
+    </div>
+    <button class="btn btn-primary" onclick="alert('Owner registration page coming soon')">List Your Property</button>
+  </section>
+</main>
+
+<footer>
+  <strong>RentConnect Ethiopia</strong>
+  <p>Better Homes. A Better Ethiopia.</p>
+  <small>Demo website — sample properties and prices only.</small>
+</footer>
+
+<script src="./js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RentConnect Ethiopia demo administration dashboard.">
+  <title>Admin Dashboard | RentConnect Ethiopia</title>
+  <link rel="stylesheet" href="./css/admin.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <a class="brand" href="./index.html">RentConnect <span>Admin</span></a>
+      <p class="sidebar-label">WORKSPACE</p>
+      <nav class="side-nav" aria-label="Admin navigation">
+        <a href="#overview">Overview</a>
+        <a href="#categories">Categories</a>
+        <a href="#accounts">Accounts</a>
+        <a href="#listings">Listings</a>
+      </nav>
+      <div class="sidebar-footer">
+        <span class="avatar">RC</span>
+        <span><strong>Demo Admin</strong><small>Local preview</small></span>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">RENTCONNECT ETHIOPIA</p>
+          <h1>Administration</h1>
+        </div>
+        <a class="back-link" href="./index.html">View rental site <span aria-hidden="true">→</span></a>
+      </header>
+
+      <div class="demo-notice" role="note">
+        <strong>Demo dashboard</strong>
+        <span>Categories are saved in this browser only. Account and listing records below are sample data; no real user accounts or authentication are connected.</span>
+      </div>
+
+      <section id="overview" class="dashboard-section">
+        <div class="section-heading">
+          <div><p class="eyebrow">AT A GLANCE</p><h2>Overview</h2></div>
+          <span class="date-label">Sample workspace</span>
+        </div>
+        <div class="stat-grid">
+          <article class="stat-card"><span class="stat-label">Total listings</span><strong>7</strong><small>Sample property data</small></article>
+          <article class="stat-card"><span class="stat-label">Categories</span><strong id="categoryStat">6</strong><small>Default and custom</small></article>
+          <article class="stat-card"><span class="stat-label">Accounts</span><strong>4</strong><small>Illustrative records</small></article>
+          <article class="stat-card"><span class="stat-label">Pending review</span><strong>1</strong><small>Sample status</small></article>
+        </div>
+      </section>
+
+      <section id="categories" class="dashboard-section panel">
+        <div class="section-heading">
+          <div><p class="eyebrow">PROPERTY SETUP</p><h2>Categories</h2><p class="section-description">Add categories to the rental page. They are saved locally in this browser.</p></div>
+          <span class="count-badge" id="categoryCount">6 categories</span>
+        </div>
+        <form class="category-form" id="categoryForm">
+          <label for="categoryName">New category</label>
+          <div class="form-row">
+            <input id="categoryName" name="categoryName" type="text" maxlength="40" placeholder="e.g. Townhouse" required>
+            <button type="submit" class="button button-primary">Add category</button>
+          </div>
+          <p class="form-message" id="categoryMessage" aria-live="polite"></p>
+        </form>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Category</th><th>Type</th><th>Listings</th><th>Action</th></tr></thead>
+            <tbody id="categoryRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="accounts" class="dashboard-section panel">
+        <div class="section-heading">
+          <div><p class="eyebrow">PEOPLE</p><h2>Accounts</h2><p class="section-description">Example renter and owner accounts for dashboard preview only.</p></div>
+          <input class="table-search" id="accountSearch" type="search" placeholder="Search accounts" aria-label="Search sample accounts">
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead>
+            <tbody id="accountRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="listings" class="dashboard-section panel">
+        <div class="section-heading">
+          <div><p class="eyebrow">MARKETPLACE</p><h2>Recent listings</h2><p class="section-description">Example property listings and review statuses.</p></div>
+          <input class="table-search" id="listingSearch" type="search" placeholder="Search listings" aria-label="Search sample listings">
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Property</th><th>Location</th><th>Monthly rent</th><th>Status</th></tr></thead>
+            <tbody id="listingRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer class="admin-footer">RentConnect Ethiopia <span>Administration demo</span></footer>
+    </main>
+  </div>
+  <script src="./js/admin.js"></script>
+</body>
+</html>
