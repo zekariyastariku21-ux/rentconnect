@@ -49,11 +49,8 @@
 
   var $ = function (id) { return document.getElementById(id); };
 
-  // listings-loader stores escaped text for safe card rendering; show it as plain text here
   function plain(s) {
-    return String(s == null ? '' : s)
-      .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+    return String(s == null ? '' : s);
   }
 
   function stat(value, label) {
@@ -77,7 +74,7 @@
     $('dtImg').alt = plain(p.title);
     $('dtType').textContent = p.category || '';
     $('dtTitle').textContent = plain(p.title);
-    $('dtLoc').textContent = plain(p.area) + ', ' + plain(p.city);
+    $('dtLoc').textContent = plain(p.city) + ', ' + plain(p.area);
     $('dtPrice').textContent = 'ETB ' + Number(p.price).toLocaleString() + ' ';
     var sm = document.createElement('small');
     sm.textContent = '/ month';
@@ -163,4 +160,3 @@
   overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 })();
-

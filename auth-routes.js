@@ -17,10 +17,13 @@ db.exec(`CREATE TABLE IF NOT EXISTS users (
   phone TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
   verified INTEGER DEFAULT 0,
+  role TEXT NOT NULL DEFAULT 'user',
   otp_hash TEXT,
   otp_expires INTEGER,
   otp_attempts INTEGER DEFAULT 0
 )`);
+const userCols = db.prepare('PRAGMA table_info(users)').all().map(c => c.name);
+if (!userCols.includes('role')) db.exec("ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'user'");
 
 function normalizePhone(p) {
   p = String(p || '').replace(/[\s-]/g, '');
@@ -45,6 +48,22 @@ async function issueOtp(phone) {
 
 const devOtp = (code) => (process.env.SHOW_OTP === 'true' ? code : undefined);
 const makeToken = (u) => jwt.sign({ id: u.id, phone: u.phone }, SECRET, { expiresIn: '7d' });
+
+function requireAuth(req, res, next) {
+  const token = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
+  try {
+    req.auth = jwt.verify(token, SECRET);
+    next();
+  } catch (error) {
+    res.status(401).json({ error: 'Please log in first.' });
+  }
+}
+
+router.get('/me', requireAuth, (req, res) => {
+  const user = db.prepare('SELECT full_name, phone, role, verified FROM users WHERE id=?').get(req.auth.id);
+  if (!user) return res.status(401).json({ error: 'Please log in first.' });
+  res.json({ user: { fullName: user.full_name, phone: user.phone, role: user.verified ? user.role : 'user' } });
+});
 
 router.post('/register', async (req, res) => {
   const { fullName, phone, password, confirmPassword } = req.body;
@@ -77,7 +96,8 @@ router.post('/verify-otp', (req, res) => {
     return res.status(400).json({ error: 'Incorrect code.' });
   }
   db.prepare('UPDATE users SET verified=1, otp_hash=NULL, otp_expires=NULL WHERE id=?').run(u.id);
-  res.json({ message: 'Phone verified.', token: makeToken(u), user: { fullName: u.full_name, phone: u.phone } });
+  const user = db.prepare('SELECT id, full_name, phone, role FROM users WHERE id=?').get(u.id);
+  res.json({ message: 'Phone verified.', token: makeToken(user), user: { fullName: user.full_name, phone: user.phone, role: user.role } });
 });
 
 router.post('/resend-otp', async (req, res) => {
@@ -94,7 +114,7 @@ router.post('/login', async (req, res) => {
   if (!u || !(await bcrypt.compare(req.body.password || '', u.password_hash)))
     return res.status(401).json({ error: 'Incorrect phone number or password.' });
   if (!u.verified) return res.status(403).json({ error: 'Phone not verified. Please register again to get a code.' });
-  res.json({ token: makeToken(u), user: { fullName: u.full_name, phone: u.phone } });
+  res.json({ token: makeToken(u), user: { fullName: u.full_name, phone: u.phone, role: u.role } });
 });
 
 // ---- Forgot password: phone -> OTP -> new password ----
@@ -144,5 +164,3 @@ router.post('/reset-password', async (req, res) => {
   res.json({ message: 'Password changed. You can log in now.' });
 });
 module.exports = router;
-
-

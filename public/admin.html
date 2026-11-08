@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="RentConnect Ethiopia demo administration dashboard.">
+  <meta name="description" content="RentConnect Ethiopia administration dashboard.">
   <title>Admin Dashboard | RentConnect Ethiopia</title>
   <link rel="stylesheet" href="./css/admin.css">
 </head>
@@ -23,7 +23,7 @@
       </nav>
       <div class="sidebar-footer">
         <span class="avatar">RC</span>
-        <span><strong>Demo Admin</strong><small>Local preview</small></span>
+        <span><strong id="adminName">Admin</strong><small>Administrator</small></span>
       </div>
     </aside>
 
@@ -36,28 +36,28 @@
         <a class="back-link" href="./index.html">View rental site <span aria-hidden="true">&rarr;</span></a>
       </header>
 
-      <div class="demo-notice" role="note">
-        <strong>Demo dashboard</strong>
-        <span>Categories are saved in this browser only. Account and listing records below are sample data; no real user accounts or authentication are connected.</span>
+      <div class="demo-notice" id="dashboardMessage" role="status" hidden>
+        <strong>Dashboard unavailable</strong>
+        <span id="dashboardMessageText"></span>
       </div>
 
       <section id="overview" class="dashboard-section">
         <div class="section-heading">
           <div><p class="eyebrow">AT A GLANCE</p><h2>Overview</h2></div>
-          <span class="date-label">Sample workspace</span>
+          <span class="date-label">Live database</span>
         </div>
         <div class="stat-grid">
-          <article class="stat-card"><span class="stat-label">Total listings</span><strong>7</strong><small>Sample property data</small><span class="statIcon ic-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></span></article>
-          <article class="stat-card"><span class="stat-label">Categories</span><strong id="categoryStat">6</strong><small>Default and custom</small><span class="statIcon ic-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1"/></svg></span></article>
-          <article class="stat-card"><span class="stat-label">Accounts</span><strong>4</strong><small>Illustrative records</small><span class="statIcon ic-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg></span></article>
-          <article class="stat-card"><span class="stat-label">Pending review</span><strong>1</strong><small>Sample status</small><span class="statIcon ic-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></article>
+          <article class="stat-card"><span class="stat-label">Total listings</span><strong id="listingStat">0</strong><small>All listing statuses</small><span class="statIcon ic-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></span></article>
+          <article class="stat-card"><span class="stat-label">Categories</span><strong id="categoryStat">0</strong><small>Saved to the database</small><span class="statIcon ic-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1"/></svg></span></article>
+          <article class="stat-card"><span class="stat-label">Accounts</span><strong id="accountStat">0</strong><small>Registered accounts</small><span class="statIcon ic-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg></span></article>
+          <article class="stat-card"><span class="stat-label">Unverified accounts</span><strong id="pendingStat">0</strong><small>Awaiting phone verification</small><span class="statIcon ic-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></article>
         </div>
       </section>
 
       <section id="categories" class="dashboard-section panel">
         <div class="section-heading">
-          <div><p class="eyebrow">PROPERTY SETUP</p><h2>Categories</h2><p class="section-description">Add categories to the rental page. They are saved locally in this browser.</p></div>
-          <span class="count-badge" id="categoryCount">6 categories</span>
+          <div><p class="eyebrow">PROPERTY SETUP</p><h2>Categories</h2><p class="section-description">Categories are shared across the site and saved in the database.</p></div>
+          <span class="count-badge" id="categoryCount">0 categories</span>
         </div>
         <form class="category-form" id="categoryForm">
           <label for="categoryName">New category</label>
@@ -77,12 +77,12 @@
 
       <section id="accounts" class="dashboard-section panel">
         <div class="section-heading">
-          <div><p class="eyebrow">PEOPLE</p><h2>Accounts</h2><p class="section-description">Example renter and owner accounts for dashboard preview only.</p></div>
-          <input class="table-search" id="accountSearch" type="search" placeholder="Search accounts" aria-label="Search sample accounts">
+          <div><p class="eyebrow">PEOPLE</p><h2>Accounts</h2><p class="section-description">Registered accounts and phone verification status.</p></div>
+          <input class="table-search" id="accountSearch" type="search" placeholder="Search accounts" aria-label="Search accounts">
         </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead>
+            <thead><tr><th>Name</th><th>Phone</th><th>Role</th><th>Status</th><th>Listings</th></tr></thead>
             <tbody id="accountRows"></tbody>
           </table>
         </div>
@@ -90,18 +90,18 @@
 
       <section id="listings" class="dashboard-section panel">
         <div class="section-heading">
-          <div><p class="eyebrow">MARKETPLACE</p><h2>Recent listings</h2><p class="section-description">Example property listings and review statuses.</p></div>
-          <input class="table-search" id="listingSearch" type="search" placeholder="Search listings" aria-label="Search sample listings">
+          <div><p class="eyebrow">MARKETPLACE</p><h2>Listings</h2><p class="section-description">All listings stored in the database.</p></div>
+          <input class="table-search" id="listingSearch" type="search" placeholder="Search listings" aria-label="Search listings">
         </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Property</th><th>Location</th><th>Monthly rent</th><th>Status</th></tr></thead>
+            <thead><tr><th>Property</th><th>Category</th><th>Location</th><th>Monthly rent</th><th>Status</th><th>Owner</th></tr></thead>
             <tbody id="listingRows"></tbody>
           </table>
         </div>
       </section>
 
-      <footer class="admin-footer">RentConnect Ethiopia <span>Administration demo</span></footer>
+      <footer class="admin-footer">RentConnect Ethiopia <span>Administration</span></footer>
     </main>
   </div>
   <script src="./js/confirm-modal.js"></script>

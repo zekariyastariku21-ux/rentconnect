@@ -5,6 +5,25 @@ const isEdit = /^\d+$/.test(editId || '');
 if (!token) location.href = 'login.html?next=' + (isEdit ? 'my-listings.html' : 'list-property.html');
 
 const show = (m, ok = false) => { const el = $('msg'); el.textContent = m; el.style.color = ok ? 'green' : 'crimson'; };
+const submitButton = $('submitBtn');
+submitButton.disabled = true;
+const categoriesReady = (async () => {
+  try {
+    const response = await fetch('/api/categories');
+    const categories = await response.json();
+    if (!response.ok) throw new Error(categories.error || 'Could not load property categories.');
+    if (!Array.isArray(categories) || categories.some(category => typeof category.name !== 'string')) {
+      throw new TypeError('The categories response has an invalid format.');
+    }
+    categories.forEach(category => $('category').add(new Option(category.name, category.name)));
+    submitButton.disabled = false;
+    return true;
+  } catch (error) {
+    show(error.message);
+    console.error('Could not load property categories:', error);
+    return false;
+  }
+})();
 
 function resizeImage(file, max = 900) {
   return new Promise((resolve, reject) => {
@@ -30,6 +49,7 @@ if (isEdit) {
   $('photo').previousElementSibling.textContent = 'Photo (leave empty to keep the current one)';
   (async () => {
     try {
+      if (!await categoriesReady) return;
       const r = await fetch('/api/listings/mine', { headers: { Authorization: 'Bearer ' + token } });
       if (r.status === 401) { location.href = 'login.html?next=my-listings.html'; return; }
       const l = (await r.json()).find(x => x.id === Number(editId));

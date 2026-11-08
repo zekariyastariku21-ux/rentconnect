@@ -37,6 +37,7 @@ h2{margin:0;font-size:20px;letter-spacing:-.3px}
 .back-link:hover span{transform:translateX(3px)}
 
 .demo-notice{display:flex;gap:12px;align-items:flex-start;margin-bottom:26px;padding:14px 16px;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:12px;background:#fffbeb;color:#78350f;font-size:13px;line-height:1.55}
+.demo-notice[hidden]{display:none}
 .demo-notice strong{flex:none}
 
 .dashboard-section{margin:0 0 28px;scroll-margin-top:20px}

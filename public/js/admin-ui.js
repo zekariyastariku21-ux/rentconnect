@@ -23,7 +23,7 @@
     proConfirm({
       type: 'warning',
       title: 'Remove this category?',
-      message: 'It will be removed from the rental page filters in this browser.',
+      message: 'It will be removed from the shared rental categories if no listings use it.',
       item: btn.dataset.removeCategory,
       confirmText: 'Yes, remove',
       cancelText: 'Cancel'

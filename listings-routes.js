@@ -6,7 +6,6 @@ const path = require('path');
 
 const router = express.Router();
 const SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
-const CATEGORIES = ['Apartment', 'House', 'Villa', 'Studio', 'Room', 'Shared Housing'];
 const FEATURES = ['Parking', 'Balcony', 'Furnished', 'Internet', 'Generator'];
 
 const db = new Database(path.join(__dirname, 'auth.db'));
@@ -64,6 +63,11 @@ const int = (v, min, max) => {
   const n = Number(v);
   return Number.isInteger(n) && n >= min && n <= max ? n : null;
 };
+function knownCategory(value) {
+  if (typeof value !== 'string') return null;
+  const row = db.prepare('SELECT name FROM categories WHERE name=? COLLATE NOCASE').get(value.trim());
+  return row ? row.name : null;
+}
 
 // Public: all listings
 router.get('/', (req, res) => {
@@ -102,6 +106,7 @@ router.get('/:id/image', (req, res) => {
 router.post('/', requireAuth, express.json({ limit: '3mb' }), (req, res) => {
   const b = req.body || {};
   const title = String(b.title || '').trim();
+  const category = knownCategory(b.category);
   const city = String(b.city || '').trim();
   const area = String(b.area || '').trim();
   const description = String(b.description || '').trim();
@@ -112,7 +117,7 @@ router.post('/', requireAuth, express.json({ limit: '3mb' }), (req, res) => {
   const size = sizeVal(b.size);
 
   if (title.length < 5 || title.length > 100) return res.status(400).json({ error: 'Title must be 5 to 100 characters.' });
-  if (!CATEGORIES.includes(b.category)) return res.status(400).json({ error: 'Choose a property type.' });
+  if (!category) return res.status(400).json({ error: 'Choose a property type.' });
   if (!city || city.length > 60) return res.status(400).json({ error: 'Enter the city.' });
   if (!area || area.length > 60) return res.status(400).json({ error: 'Enter the area.' });
   if (price === null) return res.status(400).json({ error: 'Enter a valid monthly price.' });
@@ -132,16 +137,16 @@ router.post('/', requireAuth, express.json({ limit: '3mb' }), (req, res) => {
 
   const info = db.prepare(
     `INSERT INTO listings (user_id, title, category, city, area, price, beds, baths, size, size_dims, features, description, contact_phone, image_data, created_at)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
-  ).run(req.user.id, title, b.category, city, area, price, beds, baths, size, JSON.stringify(features), description, phone, image, Date.now());
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+  ).run(req.user.id, title, category, city, area, price, beds, baths, size, dimsVal(b.size), JSON.stringify(features), description, phone, image, Date.now());
 
-  db.prepare('UPDATE listings SET size_dims=? WHERE id=?').run(dimsVal(b.size), info.lastInsertRowid);
   res.json({ message: 'Your property is now listed.', id: 1000 + info.lastInsertRowid });
 });
 
 // ---- Owner tools: my listings, edit, mark rented ----
 function parseListing(b) {
   const title = String(b.title || '').trim();
+  const category = knownCategory(b.category);
   const city = String(b.city || '').trim();
   const area = String(b.area || '').trim();
   const description = String(b.description || '').trim();
@@ -152,7 +157,7 @@ function parseListing(b) {
   const size = sizeVal(b.size);
 
   if (title.length < 5 || title.length > 100) return { error: 'Title must be 5 to 100 characters.' };
-  if (!CATEGORIES.includes(b.category)) return { error: 'Choose a property type.' };
+  if (!category) return { error: 'Choose a property type.' };
   if (!city || city.length > 60) return { error: 'Enter the city.' };
   if (!area || area.length > 60) return { error: 'Enter the area.' };
   if (price === null) return { error: 'Enter a valid monthly price.' };
@@ -169,7 +174,7 @@ function parseListing(b) {
       return { error: 'Photo must be a JPG, PNG or WEBP image under 2 MB.' };
     image = b.image;
   }
-  return { v: { title, category: b.category, city, area, price, beds, baths, size, description, phone, features, image } };
+  return { v: { title, category, city, area, price, beds, baths, size, description, phone, features, image } };
 }
 
 // The logged-in owner's own listings (active and rented)
@@ -232,8 +237,6 @@ router.use((err, req, res, next) => {
 });
 
 module.exports = router;
-
-
 
 
 

@@ -50,7 +50,7 @@ function render(items) {
     const h = el('h3', l.title);
     h.appendChild(el('span', l.status === 'rented' ? 'Rented' : 'Active', 'badge ' + l.status));
     info.appendChild(h);
-    info.appendChild(el('p', l.area + ', ' + l.city + ' \u2022 ' + l.category));
+    info.appendChild(el('p', l.city + ', ' + l.area + ' \u2022 ' + l.category));
     info.appendChild(el('p', 'ETB ' + Number(l.price).toLocaleString() + ' / month \u2022 ' + l.beds + ' beds \u2022 ' + l.baths + ' baths'));
 
     const actions = el('div', null, 'actions');
@@ -92,5 +92,4 @@ async function load() {
   } catch (err) { $('list').textContent = ''; show(err.message); }
 }
 load();
-
 

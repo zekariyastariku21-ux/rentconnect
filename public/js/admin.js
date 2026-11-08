@@ -1,189 +1,173 @@
-const defaultCategories = [
-  "Apartment",
-  "House",
-  "Villa",
-  "Studio",
-  "Room",
-  "Shared Housing"
-];
-const categoryStorageKey = "rentconnect.customCategories";
-const sampleAccounts = [
-  { name: "Abel Tesfaye", email: "abel.tesfaye@example.test", role: "Renter", status: "Active" },
-  { name: "Mekdes Alemu", email: "mekdes.alemu@example.test", role: "Owner", status: "Active" },
-  { name: "Dawit Bekele", email: "dawit.bekele@example.test", role: "Renter", status: "Pending" },
-  { name: "Hana Girma", email: "hana.girma@example.test", role: "Owner", status: "Active" }
-];
-const sampleListings = [
-  { title: "Modern 3 Bedroom Apartment", location: "Bole, Addis Ababa", rent: 35000, status: "Approved" },
-  { title: "Spacious Family House", location: "Kazanchis, Addis Ababa", rent: 45000, status: "Approved" },
-  { title: "Luxury Villa with Garden", location: "Mekanisa, Addis Ababa", rent: 120000, status: "Pending review" },
-  { title: "Affordable Family House", location: "Adama", rent: 22000, status: "Approved" }
-];
-const sampleCategoryCounts = {
-  Apartment: 1,
-  House: 2,
-  Villa: 1,
-  Studio: 1,
-  Room: 1,
-  "Shared Housing": 1
-};
-
-const categoryRows = document.getElementById("categoryRows");
-const categoryCount = document.getElementById("categoryCount");
-const categoryStat = document.getElementById("categoryStat");
-const categoryMessage = document.getElementById("categoryMessage");
+const token = localStorage.getItem('token');
+const categoryRows = document.getElementById('categoryRows');
+const categoryMessage = document.getElementById('categoryMessage');
+const dashboardMessage = document.getElementById('dashboardMessage');
+const sections = document.querySelectorAll('.dashboard-section');
+let dashboardData = null;
 
 function escapeHtml(value) {
-  return value.replace(/[&<>"']/g, character => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
+  return String(value == null ? '' : value).replace(/[&<>"']/g, character => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
   })[character]);
 }
 
-function loadCustomCategories() {
-  try {
-    const categories = JSON.parse(localStorage.getItem(categoryStorageKey) || "[]");
-    if (!Array.isArray(categories) || categories.some(category => typeof category !== "string")) {
-      throw new TypeError("Saved categories have an invalid format.");
-    }
-
-    const uniqueCategories = [];
-    for (const value of categories) {
-      const category = value.trim();
-      if (category && !defaultCategories.some(
-        defaultCategory => defaultCategory.toLowerCase() === category.toLowerCase()
-      ) && !uniqueCategories.some(existing => existing.toLowerCase() === category.toLowerCase())) {
-        uniqueCategories.push(category);
-      }
-    }
-    return uniqueCategories;
-  } catch (error) {
-    console.error("Could not load saved categories:", error);
-    showCategoryMessage("Could not read saved categories. Check browser storage and reload.", true);
-    return [];
-  }
-}
-
-function saveCustomCategories(categories) {
-  try {
-    localStorage.setItem(categoryStorageKey, JSON.stringify(categories));
-    return true;
-  } catch (error) {
-    console.error("Could not save categories:", error);
-    showCategoryMessage("Could not save this category. Browser storage may be unavailable.", true);
-    return false;
-  }
+function showDashboardMessage(message, isError = true) {
+  dashboardMessage.hidden = false;
+  dashboardMessage.querySelector('strong').textContent = isError ? 'Dashboard unavailable' : 'Access denied';
+  document.getElementById('dashboardMessageText').textContent = message;
 }
 
 function showCategoryMessage(message, isError = false) {
   categoryMessage.textContent = message;
-  categoryMessage.classList.toggle("error", isError);
+  categoryMessage.classList.toggle('error', isError);
+}
+
+async function request(url, options = {}) {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+      Authorization: 'Bearer ' + token,
+      ...options.headers
+    }
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const error = new Error(result.error || 'Could not complete the request.');
+    error.status = response.status;
+    throw error;
+  }
+  return result;
 }
 
 function renderCategories() {
-  const customCategories = loadCustomCategories();
-  const allCategories = [...defaultCategories, ...customCategories];
-  categoryCount.textContent = `${allCategories.length} ${allCategories.length === 1 ? "category" : "categories"}`;
-  categoryStat.textContent = String(allCategories.length);
-  categoryRows.innerHTML = [
-    ...defaultCategories.map(category => `
+  const categories = dashboardData.categories;
+  document.getElementById('categoryCount').textContent =
+    `${categories.length} ${categories.length === 1 ? 'category' : 'categories'}`;
+  document.getElementById('categoryStat').textContent = String(categories.length);
+  categoryRows.innerHTML = categories.length
+    ? categories.map(category => `
       <tr>
-        <td><strong>${escapeHtml(category)}</strong></td>
-        <td><span class="role">Default</span></td>
-        <td>${sampleCategoryCounts[category] || "—"}</td>
-        <td><span class="muted-action">Built in</span></td>
+        <td><strong>${escapeHtml(category.name)}</strong></td>
+        <td><span class="role">${category.isDefault ? 'Default' : 'Custom'}</span></td>
+        <td>${category.listingCount}</td>
+        <td>${category.isDefault
+          ? '<span class="muted-action">Built in</span>'
+          : `<button class="button-danger" type="button" data-remove-category="${category.id}">Remove</button>`}</td>
       </tr>
-    `),
-    ...customCategories.map(category => `
-      <tr>
-        <td><strong>${escapeHtml(category)}</strong></td>
-        <td><span class="role">Custom</span></td>
-        <td>0</td>
-        <td><button class="button-danger" type="button" data-remove-category="${escapeHtml(category)}">Remove</button></td>
-      </tr>
-    `)
-  ].join("");
+    `).join('')
+    : '<tr><td class="empty-row" colspan="4">No categories are available.</td></tr>';
 
-  categoryRows.querySelectorAll("[data-remove-category]").forEach(button => {
-    button.addEventListener("click", () => {
-      const next = loadCustomCategories().filter(
-        category => category !== button.dataset.removeCategory
-      );
-      if (saveCustomCategories(next)) {
-        showCategoryMessage(`Removed "${button.dataset.removeCategory}".`);
-        renderCategories();
+  categoryRows.querySelectorAll('[data-remove-category]').forEach(button => {
+    button.addEventListener('click', async () => {
+      button.disabled = true;
+      try {
+        await request(`/api/admin/categories/${button.dataset.removeCategory}`, { method: 'DELETE' });
+        await loadDashboard();
+        showCategoryMessage('Category removed.');
+      } catch (error) {
+        showCategoryMessage(error.message, true);
+        button.disabled = false;
       }
     });
   });
 }
 
-document.getElementById("categoryForm").addEventListener("submit", event => {
-  event.preventDefault();
-  const input = document.getElementById("categoryName");
-  const category = input.value.trim().replace(/\s+/g, " ");
-  if (!category) {
-    showCategoryMessage("Enter a category name.", true);
-    return;
-  }
-
-  const existingCategories = [...defaultCategories, ...loadCustomCategories()];
-  if (existingCategories.some(existing => existing.toLowerCase() === category.toLowerCase())) {
-    showCategoryMessage("That category already exists.", true);
-    input.focus();
-    return;
-  }
-
-  if (saveCustomCategories([...loadCustomCategories(), category])) {
-    input.value = "";
-    showCategoryMessage(`Added "${category}" to this browser.`);
-    renderCategories();
-  }
-});
-
-function renderAccounts(search = "") {
+function renderAccounts(search = '') {
   const query = search.trim().toLowerCase();
-  const matches = sampleAccounts.filter(account =>
-    `${account.name} ${account.email} ${account.role} ${account.status}`.toLowerCase().includes(query)
+  const accounts = dashboardData.accounts.filter(account =>
+    `${account.name} ${account.phone} ${account.role}`.toLowerCase().includes(query)
   );
-  document.getElementById("accountRows").innerHTML = matches.length
-    ? matches.map(account => `
+  document.getElementById('accountRows').innerHTML = accounts.length
+    ? accounts.map(account => `
       <tr>
         <td><strong>${escapeHtml(account.name)}</strong></td>
-        <td>${escapeHtml(account.email)}</td>
+        <td>${escapeHtml(account.phone)}</td>
         <td><span class="role">${escapeHtml(account.role)}</span></td>
-        <td><span class="status ${account.status === "Active" ? "status-active" : "status-review"}">${escapeHtml(account.status)}</span></td>
+        <td><span class="status ${account.verified ? 'status-active' : 'status-review'}">${account.verified ? 'Verified' : 'Unverified'}</span></td>
+        <td>${account.listingCount}</td>
       </tr>
-    `).join("")
-    : '<tr><td class="empty-row" colspan="4">No sample accounts match your search.</td></tr>';
+    `).join('')
+    : '<tr><td class="empty-row" colspan="5">No accounts match your search.</td></tr>';
 }
 
-function renderListings(search = "") {
+function renderListings(search = '') {
   const query = search.trim().toLowerCase();
-  const matches = sampleListings.filter(listing =>
-    `${listing.title} ${listing.location} ${listing.status}`.toLowerCase().includes(query)
+  const listings = dashboardData.listings.filter(listing =>
+    `${listing.title} ${listing.category} ${listing.city} ${listing.area} ${listing.status} ${listing.ownerName || ''}`.toLowerCase().includes(query)
   );
-  document.getElementById("listingRows").innerHTML = matches.length
-    ? matches.map(listing => `
+  document.getElementById('listingRows').innerHTML = listings.length
+    ? listings.map(listing => `
       <tr>
         <td><strong>${escapeHtml(listing.title)}</strong></td>
-        <td>${escapeHtml(listing.location)}</td>
-        <td>ETB ${listing.rent.toLocaleString()} / mo</td>
-        <td><span class="status ${listing.status === "Approved" ? "status-approved" : "status-review"}">${escapeHtml(listing.status)}</span></td>
+        <td>${escapeHtml(listing.category)}</td>
+        <td>${escapeHtml(listing.city)}, ${escapeHtml(listing.area)}</td>
+        <td>ETB ${Number(listing.price).toLocaleString()} / mo</td>
+        <td><span class="status ${listing.status === 'active' ? 'status-approved' : 'status-review'}">${escapeHtml(listing.status)}</span></td>
+        <td>${escapeHtml(listing.ownerName || 'Unknown')}</td>
       </tr>
-    `).join("")
-    : '<tr><td class="empty-row" colspan="4">No sample listings match your search.</td></tr>';
+    `).join('')
+    : '<tr><td class="empty-row" colspan="6">No listings match your search.</td></tr>';
 }
 
-document.getElementById("accountSearch").addEventListener("input", event => {
-  renderAccounts(event.target.value);
-});
-document.getElementById("listingSearch").addEventListener("input", event => {
-  renderListings(event.target.value);
+async function loadDashboard() {
+  dashboardData = await request('/api/admin/dashboard');
+  document.getElementById('adminName').textContent = dashboardData.adminName;
+  document.getElementById('listingStat').textContent = String(dashboardData.stats.listings);
+  document.getElementById('categoryStat').textContent = String(dashboardData.stats.categories);
+  document.getElementById('accountStat').textContent = String(dashboardData.stats.accounts);
+  document.getElementById('pendingStat').textContent = String(dashboardData.stats.unverified);
+  renderCategories();
+  renderAccounts(document.getElementById('accountSearch').value);
+  renderListings(document.getElementById('listingSearch').value);
+  sections.forEach(section => { section.hidden = false; });
+  dashboardMessage.hidden = true;
+}
+
+document.getElementById('categoryForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const input = document.getElementById('categoryName');
+  const button = event.currentTarget.querySelector('button[type="submit"]');
+  const name = input.value.trim().replace(/\s+/g, ' ');
+  if (!name) {
+    showCategoryMessage('Enter a category name.', true);
+    return;
+  }
+  button.disabled = true;
+  try {
+    await request('/api/admin/categories', { method: 'POST', body: JSON.stringify({ name }) });
+    input.value = '';
+    await loadDashboard();
+    showCategoryMessage(`Added "${name}".`);
+  } catch (error) {
+    showCategoryMessage(error.message, true);
+  } finally {
+    button.disabled = false;
+  }
 });
 
-renderCategories();
-renderAccounts();
-renderListings();
+document.getElementById('accountSearch').addEventListener('input', event => {
+  if (dashboardData) renderAccounts(event.target.value);
+});
+document.getElementById('listingSearch').addEventListener('input', event => {
+  if (dashboardData) renderListings(event.target.value);
+});
+
+sections.forEach(section => { section.hidden = true; });
+if (!token) {
+  location.replace('login.html?next=admin.html');
+} else {
+  loadDashboard().catch(error => {
+    if (error.status === 401) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      location.replace('login.html?next=admin.html');
+      return;
+    }
+    showDashboardMessage(error.message, error.status !== 403);
+  });
+}

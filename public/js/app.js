@@ -2,53 +2,34 @@ const properties = [];
 
 let selectedCategory = "";
 
-const defaultCategories = [
-  "Apartment",
-  "House",
-  "Villa",
-  "Studio",
-  "Room",
-  "Shared Housing"
-];
-
-function getCustomCategories() {
-  try {
-    const stored = JSON.parse(localStorage.getItem("rentconnect.customCategories") || "[]");
-    if (!Array.isArray(stored)) {
-      throw new TypeError("Saved categories must be an array.");
-    }
-
-    return [...new Set(stored
-      .filter(category => typeof category === "string")
-      .map(category => category.trim())
-      .filter(category => category && !defaultCategories.some(
-        defaultCategory => defaultCategory.toLowerCase() === category.toLowerCase()
-      )))];
-  } catch (error) {
-    console.error("Could not load custom property categories:", error);
-    return [];
-  }
+function escapeHtml(value) {
+  return String(value == null ? "" : value).replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[character]);
 }
 
-function renderCategoryButtons() {
+async function renderCategoryButtons() {
   const categoryButtons = document.getElementById("categoryButtons");
-  const categories = [...defaultCategories, ...getCustomCategories()];
+  let categories;
+  try {
+    const response = await fetch("/api/categories");
+    if (!response.ok) throw new Error("Could not load property categories.");
+    categories = await response.json();
+    if (!Array.isArray(categories) || categories.some(category => typeof category.name !== "string")) {
+      throw new TypeError("The categories response has an invalid format.");
+    }
+  } catch (error) {
+    console.error("Could not load property categories:", error);
+    return;
+  }
   categoryButtons.innerHTML = [
     '<button class="category active" data-category="">All Properties</button>',
     ...categories.map(category =>
-      `<button class="category" data-category="${category.replace(/[&<>"']/g, character => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      })[character])}">${category.replace(/[&<>"']/g, character => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      })[character])}</button>`
+      `<button class="category" data-category="${escapeHtml(category.name)}">${escapeHtml(category.name)}</button>`
     )
   ].join("");
 
@@ -76,15 +57,15 @@ function renderProperties() {
   const maxValue = getOptionalNumber("maxFilter");
   const min = minValue === null ? 0 : minValue;
   const max = maxValue === null ? Infinity : maxValue;
-  const city = document.getElementById("cityFilter").value;
+  const city = document.getElementById("cityFilter").value.trim().toLowerCase();
   const area = document.getElementById("areaFilter").value.trim().toLowerCase();
   const beds = Number(document.getElementById("bedFilter").value) || 0;
 
   let filtered = properties.filter(p =>
     p.price >= min && p.price <= max &&
-    (!city || p.city === city) &&
+    (!city || String(p.city).trim().toLowerCase() === city) &&
     (!selectedCategory || p.category === selectedCategory) &&
-    (!area || `${p.area} ${p.city} ${p.title}`.toLowerCase().includes(area)) &&
+    (!area || String(p.area).toLowerCase().includes(area)) &&
     p.beds >= beds
   );
 
@@ -93,10 +74,8 @@ function renderProperties() {
   if(sort==="high") filtered.sort((a,b)=>b.price-a.price);
   if(sort==="newest") filtered.sort((a,b)=>b.id-a.id);
 
-  const categoryLabel = selectedCategory ? ` ${selectedCategory}` : "";
-  const propertyLabel = filtered.length === 1 ? "property" : "properties";
   document.getElementById("resultCount").textContent =
-    `Found ${filtered.length}${categoryLabel} ${propertyLabel}`;
+    `${filtered.length} results`;
   const grid = document.getElementById("propertyGrid");
 
   if(!filtered.length) {
@@ -106,10 +85,10 @@ function renderProperties() {
 
   grid.innerHTML = filtered.map(p=>`
     <article class="property-card">
-      <img src="${p.image}" alt="${p.title}" loading="lazy">
+      <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title)}" loading="lazy">
       <div class="property-info">
-        <h3>${p.title}</h3>
-        <div class="address">📍 ${p.area}, ${p.city}</div>
+        <h3>${escapeHtml(p.title)}</h3>
+        <div class="address">📍 ${escapeHtml(p.city)}, ${escapeHtml(p.area)}</div>
         <div class="price">ETB ${p.price.toLocaleString()} <small>/ month</small></div>
         <div class="details">
           <span>🛏 ${p.beds} Beds</span>

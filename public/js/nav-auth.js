@@ -126,4 +126,28 @@
 
   loginBtn.replaceWith(wrap);
   registerBtn.remove();
+
+  fetch('/api/auth/me', { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } })
+    .then(function (response) {
+      if (response.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        return null;
+      }
+      if (!response.ok) throw new Error('Could not verify the current account.');
+      return response.json();
+    })
+    .then(function (result) {
+      if (!result || !result.user) return;
+      localStorage.setItem('user', JSON.stringify(result.user));
+      if (result.user.role !== 'admin') return;
+      var adminLink = document.createElement('a');
+      adminLink.className = 'btn btn-outline';
+      adminLink.href = 'admin.html';
+      adminLink.textContent = 'Admin';
+      wrap.parentNode.insertBefore(adminLink, wrap);
+    })
+    .catch(function (error) {
+      console.error('Could not verify account permissions:', error);
+    });
 })();
