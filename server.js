@@ -1,6 +1,10 @@
-const http = require('http');
+﻿const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const express = require('express');
+const authApp = express();
+authApp.use('/api/auth', require('./auth-routes'));
+authApp.use('/api/listings', require('./listings-routes'));
 
 const hasCustomPort = Boolean(process.env.PORT);
 let port = hasCustomPort ? Number(process.env.PORT) : 3000;
@@ -24,6 +28,8 @@ const mimeTypes = {
 };
 
 const server = http.createServer((req, res) => {
+  if (req.url.startsWith('/api/auth') || req.url.startsWith('/api/listings')) return authApp(req, res);
+
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8', Allow: 'GET, HEAD' });
     res.end('Method not allowed');
@@ -91,3 +97,7 @@ server.on('listening', () => {
 });
 
 server.listen(port);
+
+
+
+

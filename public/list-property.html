@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>List Your Property - RentConnect</title>
+<link rel="stylesheet" href="css/list-property.css">
+</head><body class="lpPage"><div class="lpWrap">
+
+<nav class="topbar">
+  <a class="navBack" href="my-listings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>My listings</a>
+  <a class="navBack" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Home</a>
+</nav>
+
+<div class="lpCard">
+  <div class="lpHead">
+    <h2>List your property</h2>
+    <p>Fill in the details below. Good photos and a clear description help your property get rented faster.</p>
+  </div>
+
+  <form id="listForm">
+
+    <div class="sec">
+      <h3 class="secTitle"><span class="secNum">1</span>Basic information</h3>
+      <div class="field">
+        <label for="title">Title</label>
+        <input id="title" maxlength="100" placeholder="e.g. Modern 2 Bedroom Apartment" required>
+      </div>
+      <div class="field">
+        <label for="category">Property type</label>
+        <select id="category" required>
+          <option value="">Choose a type...</option>
+          <option>Apartment</option><option>House</option><option>Villa</option>
+          <option>Studio</option><option>Room</option><option>Shared Housing</option>
+        </select>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="city">City</label><input id="city" placeholder="Addis Ababa" required></div>
+        <div class="field"><label for="area">Area</label><input id="area" placeholder="Bole" required></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="secTitle"><span class="secNum">2</span>Price and size</h3>
+      <div class="field">
+        <label for="price">Monthly price</label>
+        <div class="prefixWrap"><span class="pre">ETB</span><input id="price" type="number" min="1" placeholder="25000" required><span class="suf">/ month</span></div>
+      </div>
+      <div class="row3">
+        <div class="field"><label for="beds">Bedrooms</label><input id="beds" type="number" min="0" value="1" required></div>
+        <div class="field"><label for="baths">Bathrooms</label><input id="baths" type="number" min="0" value="1" required></div>
+        <div class="field"><label for="size">Size (m&sup2;)</label><input id="size" type="text" placeholder="120 or 4x3" autocomplete="off" required></div>
+      </div>
+      <small id="sizeHint"></small>
+    </div>
+
+    <div class="sec">
+      <h3 class="secTitle"><span class="secNum">3</span>Features</h3>
+      <div class="feats" id="feats">
+        <label class="chip"><input type="checkbox" value="Parking"><span>Parking</span></label>
+        <label class="chip"><input type="checkbox" value="Balcony"><span>Balcony</span></label>
+        <label class="chip"><input type="checkbox" value="Furnished"><span>Furnished</span></label>
+        <label class="chip"><input type="checkbox" value="Internet"><span>Internet</span></label>
+        <label class="chip"><input type="checkbox" value="Generator"><span>Generator</span></label>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="secTitle"><span class="secNum">4</span>Description and contact</h3>
+      <div class="field">
+        <label for="description">Description <span class="opt">(optional)</span></label>
+        <textarea id="description" rows="4" maxlength="1000" placeholder="Describe the property: condition, nearby places, rules, what is included..."></textarea>
+        <span class="counter" id="descCount">0 / 1000</span>
+      </div>
+      <div class="field">
+        <label for="phone">Contact phone</label>
+        <input id="phone" type="tel" placeholder="09XXXXXXXX" inputmode="tel" required>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3 class="secTitle"><span class="secNum">5</span>Photo</h3>
+      <div class="field">
+        <label class="lbl" for="photo">Property photo</label>
+        <input id="photo" type="file" accept="image/jpeg,image/png,image/webp">
+        <p class="hintTxt">JPG, PNG or WEBP. The photo is resized automatically.</p>
+        <img id="preview" alt="Photo preview">
+      </div>
+    </div>
+
+    <button id="submitBtn" type="submit">Publish listing</button>
+  </form>
+  <p id="msg"></p>
+</div>
+</div>
+<script src="js/list-property.js"></script>
+<script src="js/list-property-ui.js"></script>
+</body></html>

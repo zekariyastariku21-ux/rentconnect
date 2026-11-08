@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Listings - RentConnect</title>
+<style>
+body{font-family:system-ui,sans-serif;background:#f3f4f6;display:flex;justify-content:center;padding:32px 16px;margin:0}
+.wrap{width:100%;max-width:700px}
+.item{background:#fff;border-radius:12px;box-shadow:0 2px 12px #0001;display:flex;gap:14px;padding:14px;margin-bottom:14px}
+.item img,.noimg{width:130px;height:100px;object-fit:cover;border-radius:8px;background:#e5e7eb;flex:none}
+.info{flex:1;min-width:0}
+.info h3{margin:0 0 4px;font-size:17px;word-break:break-word}
+.info p{margin:2px 0;color:#555;font-size:14px}
+.badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600;margin-left:6px}
+.active{background:#dcfce7;color:#166534}.rented{background:#fee2e2;color:#991b1b}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.actions a,.actions button{padding:8px 14px;border-radius:8px;font-size:14px;border:0;cursor:pointer;text-decoration:none;font-family:inherit}
+.edit{background:#2563eb;color:#fff}.rent{background:#f59e0b;color:#fff}.relist{background:#16a34a;color:#fff}
+.item.isRented{opacity:.75}
+a{color:#2563eb}
+@media(max-width:520px){.item{flex-direction:column}.item img,.noimg{width:100%;height:160px}}
+.topbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:22px}
+.navBack,.navAdd{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;line-height:1;transition:background .15s ease,box-shadow .15s ease,transform .1s ease,border-color .15s ease}
+.navBack svg,.navAdd svg{width:18px;height:18px;flex:none;transition:transform .15s ease}
+.navBack{color:#334155;background:#fff;border:1px solid #d1d5db;box-shadow:0 1px 2px #0000000d}
+.navBack:hover{background:#f8fafc;border-color:#94a3b8}
+.navBack:hover svg{transform:translateX(-3px)}
+.navAdd{color:#fff;background:#2563eb;border:1px solid #2563eb;box-shadow:0 4px 12px rgba(37,99,235,.35);margin-left:auto}
+.navAdd:hover{background:#1d4ed8;border-color:#1d4ed8}
+.navAdd:hover svg{transform:rotate(90deg)}
+.navBack:active,.navAdd:active{transform:scale(.97)}
+.navBack:focus-visible,.navAdd:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+@media(max-width:420px){.navBack,.navAdd{flex:1;justify-content:center;margin-left:0}}
+@media(prefers-color-scheme:dark){.navBack{background:#1e293b;color:#f1f5f9;border-color:#334155}.navBack:hover{background:#334155}}</style></head><body><div class="wrap">
+<nav class="topbar">
+  <a class="navBack" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>Back to home</a>
+  <a class="navAdd" href="list-property.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>List a new property</a>
+</nav>
+<h2>My listings</h2>
+<p id="msg"></p>
+<div id="list">Loading...</div>
+</div><script src="js/confirm-modal.js"></script><script src="js/my-listings.js"></script></body></html>
+
+

@@ -10,13 +10,16 @@
 <body>
   <div class="admin-layout">
     <aside class="sidebar">
-      <a class="brand" href="./index.html">RentConnect <span>Admin</span></a>
+      <a class="brand" href="./index.html">
+        <span class="brandMark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg></span>
+        <span class="brandText">RentConnect <span>Admin</span></span>
+      </a>
       <p class="sidebar-label">WORKSPACE</p>
       <nav class="side-nav" aria-label="Admin navigation">
-        <a href="#overview">Overview</a>
-        <a href="#categories">Categories</a>
-        <a href="#accounts">Accounts</a>
-        <a href="#listings">Listings</a>
+        <a href="#overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Overview</a>
+        <a href="#categories"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1"/></svg>Categories</a>
+        <a href="#accounts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg>Accounts</a>
+        <a href="#listings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Listings</a>
       </nav>
       <div class="sidebar-footer">
         <span class="avatar">RC</span>
@@ -30,7 +33,7 @@
           <p class="eyebrow">RENTCONNECT ETHIOPIA</p>
           <h1>Administration</h1>
         </div>
-        <a class="back-link" href="./index.html">View rental site <span aria-hidden="true">→</span></a>
+        <a class="back-link" href="./index.html">View rental site <span aria-hidden="true">&rarr;</span></a>
       </header>
 
       <div class="demo-notice" role="note">
@@ -44,10 +47,10 @@
           <span class="date-label">Sample workspace</span>
         </div>
         <div class="stat-grid">
-          <article class="stat-card"><span class="stat-label">Total listings</span><strong>7</strong><small>Sample property data</small></article>
-          <article class="stat-card"><span class="stat-label">Categories</span><strong id="categoryStat">6</strong><small>Default and custom</small></article>
-          <article class="stat-card"><span class="stat-label">Accounts</span><strong>4</strong><small>Illustrative records</small></article>
-          <article class="stat-card"><span class="stat-label">Pending review</span><strong>1</strong><small>Sample status</small></article>
+          <article class="stat-card"><span class="stat-label">Total listings</span><strong>7</strong><small>Sample property data</small><span class="statIcon ic-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></span></article>
+          <article class="stat-card"><span class="stat-label">Categories</span><strong id="categoryStat">6</strong><small>Default and custom</small><span class="statIcon ic-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1"/></svg></span></article>
+          <article class="stat-card"><span class="stat-label">Accounts</span><strong>4</strong><small>Illustrative records</small><span class="statIcon ic-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg></span></article>
+          <article class="stat-card"><span class="stat-label">Pending review</span><strong>1</strong><small>Sample status</small><span class="statIcon ic-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></article>
         </div>
       </section>
 
@@ -101,6 +104,8 @@
       <footer class="admin-footer">RentConnect Ethiopia <span>Administration demo</span></footer>
     </main>
   </div>
+  <script src="./js/confirm-modal.js"></script>
   <script src="./js/admin.js"></script>
+  <script src="./js/admin-ui.js"></script>
 </body>
 </html>

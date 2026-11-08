@@ -7,6 +7,7 @@
 <title>RentConnect Ethiopia | Find Your Rental Home</title>
 <meta name="description" content="Find apartments, houses, villas, studios and rooms for rent in Ethiopia.">
 <link rel="stylesheet" href="./css/styles.css">
+<link rel="stylesheet" href="./css/filters.css">
 </head>
 <body>
 
@@ -20,8 +21,8 @@
       <a href="./admin.html">Admin</a>
     </div>
     <div class="nav-actions">
-      <button class="btn btn-outline" onclick="alert('Login page coming soon')">Login</button>
-      <button class="btn btn-primary" onclick="alert('Registration page coming soon')">Register</button>
+      <button class="btn btn-outline" id="loginBtn" onclick="location.href='login.html'">Login</button>
+      <button class="btn btn-primary" id="registerBtn" onclick="location.href='register.html'">Register</button>
     </div>
   </nav>
 </header>
@@ -104,16 +105,26 @@
       <h2>Have a property to rent?</h2>
       <p>List your rental and connect with renters across Ethiopia.</p>
     </div>
-    <button class="btn btn-primary" onclick="alert('Owner registration page coming soon')">List Your Property</button>
+    <button class="btn btn-primary" onclick="location.href='list-property.html'">List Your Property</button>
   </section>
 </main>
 
 <footer>
   <strong>RentConnect Ethiopia</strong>
   <p>Better Homes. A Better Ethiopia.</p>
-  <small>Demo website — sample properties and prices only.</small>
+  <small>Demo website &mdash; sample properties and prices only.</small>
 </footer>
 
 <script src="./js/app.js"></script>
+<script src="js/nav-auth.js"></script>
+<script src="js/listings-loader.js"></script>
+<script src="js/details.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/filters-ui.js"></script>
+<script src="js/filters-category.js"></script>
 </body>
 </html>
+
+
+
+

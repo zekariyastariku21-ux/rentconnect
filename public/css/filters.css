@@ -1,0 +1,144 @@
+﻿/* ---- Filter panel ---- */
+.filters{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:22px;box-shadow:0 1px 2px rgba(15,23,42,.05),0 12px 32px rgba(15,23,42,.08)}
+.filters .filter-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+.filters .filter-group{margin:0;min-width:0}
+.filters .filter-group label.title{display:block;margin:0 0 7px;font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#64748b}
+
+.filters .filter-group input,
+.filters .filter-group select,
+.results-top #sort{width:100%;height:46px;padding:0 14px;font-size:15px;color:#0f172a;background-color:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;outline:none;transition:border-color .15s ease,box-shadow .15s ease,background-color .15s ease}
+.filters .filter-group input::placeholder{color:#94a3b8}
+.filters .filter-group input:hover,.filters .filter-group select:hover,.results-top #sort:hover{border-color:#cbd5e1}
+.filters .filter-group input:focus,.filters .filter-group select:focus,.results-top #sort:focus{background-color:#fff;border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.15)}
+
+.filters .filter-group select,.results-top #sort{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:42px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:18px}
+.filters input[type=number]{-moz-appearance:textfield;appearance:textfield}
+.filters input[type=number]::-webkit-outer-spin-button,.filters input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+/* search icon inside the neighborhood field */
+.filters #areaFilter{padding-left:42px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:14px center;background-size:18px}
+
+/* ETB prefix on price fields (added by filters.js) */
+.fPre{position:relative;display:block}
+.fPre b{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:800;color:#64748b;pointer-events:none}
+.fPre input{padding-left:48px!important}
+
+/* buttons */
+.filters .filter-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px;padding-top:18px;border-top:1px solid #e2e8f0}
+.filters .filter-actions .btn{height:46px;padding:0 24px;border-radius:12px;font-size:15px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s ease,box-shadow .15s ease,background .15s ease,border-color .15s ease}
+.filters .filter-actions .btn-primary{border:0;color:#fff;background:linear-gradient(135deg,#2563eb,#4f46e5);box-shadow:0 8px 20px rgba(37,99,235,.3)}
+.filters .filter-actions .btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(37,99,235,.42)}
+.filters .filter-actions .btn-outline{color:#334155;background:#fff;border:1.5px solid #d1d5db}
+.filters .filter-actions .btn-outline:hover{background:#f8fafc;border-color:#94a3b8}
+.filters .filter-actions .btn:active{transform:scale(.97)}
+.filters .filter-actions .btn:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+
+/* Filter toggle button + active count badge */
+.filter-toggle{position:relative;display:inline-flex!important;align-items:center;gap:8px;height:44px;padding:0 18px!important;border-radius:12px!important;font-weight:700!important;transition:background .15s ease,color .15s ease,box-shadow .15s ease,transform .1s ease}
+.filter-toggle::before{content:"";width:18px;height:18px;flex:none;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18l-7 8v6l-4 2v-8Z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5h18l-7 8v6l-4 2v-8Z'/%3E%3C/svg%3E") center/contain no-repeat}
+.filter-toggle:hover{box-shadow:0 4px 14px rgba(37,99,235,.22)}
+.filter-toggle:active{transform:scale(.97)}
+.filter-toggle[aria-expanded="true"]{background:#2563eb;color:#fff}
+.filter-toggle:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+.fBadge{min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#ef4444;color:#fff;font-size:12px;font-weight:800;line-height:22px;text-align:center}
+.fBadge[hidden]{display:none}
+
+@media(max-width:650px){
+.filters{padding:18px 16px}
+.filters .filter-controls{grid-template-columns:1fr 1fr;gap:14px}
+.filters .filter-actions .btn{flex:1}
+}
+@media(max-width:420px){
+.filters .filter-controls{grid-template-columns:1fr}
+}
+
+/* ================= Slide-in filter drawer ================= */
+.content,.content.filters-hidden{display:block!important}
+
+.filters,.content.filters-hidden .filters{
+  display:flex!important;flex-direction:column;
+  position:fixed;top:0;bottom:0;left:0;z-index:10001;
+  width:min(400px,92vw);margin:0!important;padding:0!important;
+  background:#fff;border:0;border-radius:0 22px 22px 0;
+  box-shadow:0 0 60px rgba(15,23,42,.35);
+  transform:translateX(-105%);visibility:hidden;
+  transition:transform .32s cubic-bezier(.22,.8,.3,1),visibility 0s linear .32s;
+}
+.filters.fOpen{transform:none;visibility:visible;transition:transform .32s cubic-bezier(.22,.8,.3,1),visibility 0s}
+
+.fHead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;border-bottom:1px solid #e2e8f0;flex:none}
+.fHead h3{margin:0;display:flex;align-items:center;gap:10px;font-size:19px;font-weight:800;color:#0f172a}
+.fHead h3 svg{width:22px;height:22px;color:#2563eb}
+.fClose{width:38px;height:38px;border:0;border-radius:10px;background:#f1f5f9;color:#475569;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s ease,transform .1s ease}
+.fClose svg{width:20px;height:20px}
+.fClose:hover{background:#e2e8f0;color:#0f172a}
+.fClose:active{transform:scale(.94)}
+.fClose:focus-visible{outline:3px solid #93c5fd}
+
+.filters .filter-controls{flex:1;overflow-y:auto;padding:20px;display:flex!important;flex-direction:column;gap:18px;grid-template-columns:none!important}
+.filters .filter-actions{flex:none;flex-wrap:nowrap;margin:0!important;padding:16px 20px!important;border-top:1px solid #e2e8f0;background:#fff;border-radius:0 0 22px 0}
+.filters .filter-actions .btn-primary{flex:2}
+.filters .filter-actions .btn-outline{flex:1;padding:0 12px}
+
+.fOverlay{position:fixed;inset:0;z-index:10000;background:rgba(15,23,42,.5);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:opacity .25s ease,visibility 0s linear .25s}
+.fOverlay.show{opacity:1;visibility:visible;transition:opacity .25s ease,visibility 0s}
+
+@media(max-width:650px){
+.filters{width:min(380px,90vw)}
+.filters .filter-controls{grid-template-columns:none!important}
+}
+@media(prefers-reduced-motion:reduce){
+.filters,.fOverlay{transition:none!important}
+}
+
+/* ================= Drawer: better arrangement and sizes ================= */
+.filters{width:min(420px,92vw)}
+.filters .fHead{padding:20px 22px}
+.filters .filter-controls{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:22px 12px!important;
+  align-content:start;
+  padding:22px!important;
+}
+.filters .filter-group:nth-child(n+3){grid-column:1/-1}
+.filters .filter-group label.title{margin:0 0 8px;font-size:12px;letter-spacing:.6px}
+
+.filters .filter-group input,
+.filters .filter-group select{height:48px;font-size:15px;border-radius:12px}
+.filters .fPre input{padding-left:50px!important}
+
+/* bedrooms pills (select is hidden, pills control it) */
+.fSegHidden{display:none!important}
+.fSeg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.fSeg button{height:44px;border:1.5px solid #e2e8f0;border-radius:12px;background:#f8fafc;color:#334155;font:700 14px system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer;transition:background .15s ease,border-color .15s ease,color .15s ease,transform .1s ease,box-shadow .15s ease}
+.fSeg button:hover{border-color:#94a3b8;background:#fff}
+.fSeg button:active{transform:scale(.95)}
+.fSeg button:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+.fSeg button.on{background:#2563eb;border-color:#2563eb;color:#fff;box-shadow:0 6px 14px rgba(37,99,235,.3)}
+
+/* footer buttons a little taller */
+.filters .filter-actions{padding:16px 22px!important;gap:12px}
+.filters .filter-actions .btn{height:50px}
+
+/* nicer scrollbar inside the drawer */
+.filters .filter-controls{scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent}
+.filters .filter-controls::-webkit-scrollbar{width:8px}
+.filters .filter-controls::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:8px}
+
+@media(max-width:420px){
+.filters .filter-controls{padding:18px!important;gap:20px 10px!important}
+.filters .fHead{padding:16px 18px}
+.filters .filter-actions{padding:14px 18px!important}
+.fSeg{gap:6px}
+}
+
+/* ================= Category pills in the drawer ================= */
+.filters .filter-group.fCat{grid-column:1/-1}
+.filters .filter-group:nth-child(3){grid-column:auto}
+.fCatWrap{display:flex;flex-wrap:wrap;gap:8px}
+.fCatWrap button{height:40px;padding:0 16px;border:1.5px solid #e2e8f0;border-radius:999px;background:#f8fafc;color:#334155;font:600 14px system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer;transition:background .15s ease,border-color .15s ease,color .15s ease,transform .1s ease,box-shadow .15s ease}
+.fCatWrap button:hover{border-color:#94a3b8;background:#fff}
+.fCatWrap button:active{transform:scale(.96)}
+.fCatWrap button:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+.fCatWrap button.on{background:#2563eb;border-color:#2563eb;color:#fff;box-shadow:0 6px 14px rgba(37,99,235,.3)}

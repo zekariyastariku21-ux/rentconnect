@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login - RentConnect</title>
+<link rel="stylesheet" href="css/auth.css">
+</head><body class="authPage"><div class="authWrap">
+<a class="authBack" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>Back to home</a>
+<div class="authCard">
+  <div class="brand">
+    <div class="brandMark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg></div>
+    <span class="brandName">RentConnect</span>
+  </div>
+  <h1>Welcome back</h1>
+  <p class="sub">Log in with your phone number and password.</p>
+  <form id="loginForm">
+    <div class="field"><label for="phone">Phone number</label>
+      <input id="phone" type="tel" placeholder="09XXXXXXXX" autocomplete="tel" inputmode="tel" required></div>
+    <div class="field"><label for="password">Password</label>
+      <input id="password" type="password" placeholder="Enter your password" autocomplete="current-password" required></div>
+    <p class="forgotRow"><a href="forgot-password.html">Forgot password?</a></p>
+    <button class="btnMain" type="submit">Log in</button>
+  </form>
+  <p id="msg"></p>
+  <p class="switch">New to RentConnect? <a href="register.html">Create an account</a></p>
+</div></div>
+<script src="js/auth.js"></script>
+<script src="js/password-toggle.js"></script>
+</body></html>
+

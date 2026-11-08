@@ -1,12 +1,4 @@
-const properties = [
-  {id:1,title:"Modern 3 Bedroom Apartment",category:"Apartment",city:"Addis Ababa",area:"Bole",price:35000,beds:3,baths:2,size:120,features:["Parking","Balcony"],image:"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=700"},
-  {id:2,title:"Spacious Family House",category:"House",city:"Addis Ababa",area:"Kazanchis",price:45000,beds:4,baths:3,size:200,features:["Parking","Furnished"],image:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700"},
-  {id:3,title:"Luxury Villa with Garden",category:"Villa",city:"Addis Ababa",area:"Mekanisa",price:120000,beds:5,baths:4,size:350,features:["Parking","Balcony","Generator"],image:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=700"},
-  {id:4,title:"Modern Studio Apartment",category:"Studio",city:"Addis Ababa",area:"Bole",price:18000,beds:1,baths:1,size:40,features:["Furnished","Internet"],image:"https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=700"},
-  {id:5,title:"Comfortable Room for Rent",category:"Room",city:"Addis Ababa",area:"Piassa",price:8000,beds:1,baths:1,size:25,features:["Furnished","Internet"],image:"https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=700"},
-  {id:6,title:"Shared Room in Apartment",category:"Shared Housing",city:"Addis Ababa",area:"CMC",price:6000,beds:1,baths:1,size:20,features:["Internet"],image:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=700"},
-  {id:7,title:"Affordable Family House",category:"House",city:"Adama",area:"Bole Area",price:22000,beds:3,baths:2,size:140,features:["Parking"],image:"https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=700"}
-];
+const properties = [];
 
 let selectedCategory = "";
 

@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Register - RentConnect</title>
+<link rel="stylesheet" href="css/auth.css">
+</head><body class="authPage"><div class="authWrap">
+<a class="authBack" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>Back to home</a>
+<div class="authCard">
+  <div class="brand">
+    <div class="brandMark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg></div>
+    <span class="brandName">RentConnect</span>
+  </div>
+  <h1>Create your account</h1>
+  <p class="sub">Register with your phone number. We'll send you a code to verify it.</p>
+  <form id="registerForm">
+    <div class="field"><label for="fullName">Full name</label>
+      <input id="fullName" placeholder="Your full name" autocomplete="name" required></div>
+    <div class="field"><label for="phone">Phone number</label>
+      <input id="phone" type="tel" placeholder="09XXXXXXXX" autocomplete="tel" inputmode="tel" required></div>
+    <div class="field"><label for="password">Password</label>
+      <input id="password" type="password" placeholder="At least 6 characters" autocomplete="new-password" required></div>
+    <div class="field"><label for="confirmPassword">Confirm password</label>
+      <input id="confirmPassword" type="password" placeholder="Repeat your password" autocomplete="new-password" required></div>
+    <button class="btnMain" type="submit">Create account</button>
+  </form>
+  <div id="otpSection" style="display:none">
+    <p class="otpInfo">Enter the 6-digit code we sent to your phone to finish registering.</p>
+    <div class="field"><label for="otp">Verification code</label>
+      <input id="otp" inputmode="numeric" maxlength="6" placeholder="000000" autocomplete="one-time-code"></div>
+    <button id="verifyBtn" type="button" class="btnMain">Verify and continue</button>
+    <button id="resendBtn" type="button" class="btnAlt">Resend code</button>
+  </div>
+  <p id="msg"></p>
+  <p class="switch">Already have an account? <a href="login.html">Log in</a></p>
+</div></div>
+<script src="js/auth.js"></script>
+<script src="js/password-toggle.js"></script>
+</body></html>

@@ -1,0 +1,95 @@
+﻿*{box-sizing:border-box}
+body.lpPage{margin:0;min-height:100vh;padding:28px 16px 60px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#0f172a;background:radial-gradient(1200px 600px at 10% -10%,#dbeafe 0,transparent 60%),radial-gradient(900px 500px at 110% 20%,#e0e7ff 0,transparent 60%),#f1f5f9}
+.lpWrap{width:100%;max-width:680px;margin:0 auto}
+
+.topbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:20px}
+.navBack{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;line-height:1;color:#334155;background:#fff;border:1px solid #d1d5db;box-shadow:0 1px 2px #0000000d;transition:background .15s ease,border-color .15s ease,transform .1s ease}
+.navBack svg{width:18px;height:18px;flex:none;transition:transform .15s ease}
+.navBack:hover{background:#f8fafc;border-color:#94a3b8}
+.navBack:hover svg{transform:translateX(-3px)}
+.navBack:active{transform:scale(.97)}
+.navBack:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+
+.lpCard{background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:30px 28px 28px;box-shadow:0 1px 2px rgba(15,23,42,.06),0 20px 50px rgba(15,23,42,.12)}
+.lpHead h2{margin:0 0 6px;font-size:28px;letter-spacing:-.5px}
+.lpHead p{margin:0 0 6px;color:#64748b;font-size:15px;line-height:1.5}
+
+.sec{margin-top:26px;padding-top:22px;border-top:1px solid #e2e8f0}
+.sec:first-of-type{border-top:0;padding-top:10px}
+.secTitle{display:flex;align-items:center;gap:10px;margin:0 0 16px;font-size:16px;font-weight:700}
+.secNum{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none}
+
+.field{margin-bottom:14px}
+.field>label,.lbl{display:block;font-size:13px;font-weight:600;color:#334155;margin-bottom:6px}
+.opt{font-weight:400;color:#94a3b8}
+.lpCard input[type=text],.lpCard input[type=number],.lpCard input[type=tel],.lpCard select,.lpCard textarea,.lpCard input:not([type]){width:100%;padding:12px 14px;font-size:15px;font-family:inherit;color:#0f172a;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;outline:none;transition:border-color .15s ease,box-shadow .15s ease,background .15s ease}
+.lpCard textarea{resize:vertical;min-height:110px;line-height:1.5}
+.lpCard input::placeholder,.lpCard textarea::placeholder{color:#94a3b8}
+.lpCard input:hover,.lpCard select:hover,.lpCard textarea:hover{border-color:#cbd5e1}
+.lpCard input:focus,.lpCard select:focus,.lpCard textarea:focus{background:#fff;border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.15)}
+.lpCard select{appearance:none;-webkit-appearance:none;padding-right:42px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:18px}
+.lpCard input[type=number]{-moz-appearance:textfield}
+.lpCard input[type=number]::-webkit-outer-spin-button,.lpCard input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+
+.prefixWrap{position:relative}
+.prefixWrap .pre{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:700;color:#64748b;pointer-events:none}
+.prefixWrap input{padding-left:52px!important}
+.prefixWrap .suf{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:13px;color:#94a3b8;pointer-events:none}
+
+#sizeHint{display:block;min-height:18px;margin-top:6px;font-size:13px;font-weight:600;color:#2563eb}
+#sizeHint:empty{display:none}
+
+.feats{display:flex;flex-wrap:wrap;gap:10px}
+.chip{position:relative;margin:0!important}
+.chip input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.chip span{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;border:1.5px solid #e2e8f0;background:#f8fafc;color:#334155;font-size:14px;font-weight:600;transition:all .15s ease;user-select:none}
+.chip span::before{content:"+";font-weight:700;color:#94a3b8;transition:transform .15s ease}
+.chip:hover span{border-color:#94a3b8}
+.chip input:checked+span{background:#dbeafe;border-color:#2563eb;color:#1d4ed8}
+.chip input:checked+span::before{content:"\2713";color:#2563eb}
+.chip input:focus-visible+span{outline:3px solid #93c5fd;outline-offset:2px}
+
+.counter{display:block;text-align:right;font-size:12px;color:#94a3b8;margin-top:4px}
+
+.lpCard input[type=file]{width:100%;padding:26px 16px;text-align:center;font-size:14px;color:#64748b;background:#f8fafc;border:2px dashed #cbd5e1;border-radius:14px;cursor:pointer;transition:border-color .15s ease,background .15s ease}
+.lpCard input[type=file]:hover{border-color:#2563eb;background:#eff6ff}
+.lpCard input[type=file]::file-selector-button{margin-right:14px;padding:9px 16px;border:0;border-radius:9px;background:#2563eb;color:#fff;font:600 14px system-ui,sans-serif;cursor:pointer;transition:background .15s ease}
+.lpCard input[type=file]::file-selector-button:hover{background:#1d4ed8}
+.hintTxt{margin:8px 0 0;font-size:12px;color:#94a3b8}
+#preview{display:none;width:100%;max-height:280px;object-fit:cover;border-radius:14px;margin-top:12px;border:1px solid #e2e8f0;box-shadow:0 6px 18px rgba(15,23,42,.12)}
+
+#submitBtn{width:100%;margin-top:26px;padding:15px 18px;border:0;border-radius:14px;color:#fff;font:700 16px system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer;background:linear-gradient(135deg,#2563eb,#4f46e5);box-shadow:0 10px 24px rgba(37,99,235,.35);transition:transform .1s ease,box-shadow .15s ease,opacity .15s ease}
+#submitBtn:hover{box-shadow:0 12px 30px rgba(37,99,235,.45)}
+#submitBtn:active{transform:scale(.985)}
+#submitBtn:focus-visible{outline:3px solid #93c5fd;outline-offset:3px}
+#submitBtn:disabled{opacity:.65;cursor:wait;box-shadow:none}
+#msg{min-height:20px;margin:14px 0 0;font-size:14px;font-weight:600;text-align:center;line-height:1.4}
+#msg:empty{display:none}
+
+@media(max-width:560px){
+.lpCard{padding:24px 18px 22px}
+.row2{grid-template-columns:1fr}
+.row3{grid-template-columns:1fr 1fr}
+.row3 .field:last-child{grid-column:1/-1}
+.lpHead h2{font-size:24px}
+}
+@media(prefers-color-scheme:dark){
+body.lpPage{color:#f1f5f9;background:radial-gradient(1200px 600px at 10% -10%,#1e3a8a55 0,transparent 60%),#0b1220}
+.lpCard{background:#111a2e;border-color:#1e293b;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.lpHead p{color:#94a3b8}
+.sec{border-color:#1e293b}
+.field>label,.lbl{color:#cbd5e1}
+.navBack{background:#1e293b;color:#f1f5f9;border-color:#334155}
+.navBack:hover{background:#334155}
+.lpCard input[type=text],.lpCard input[type=number],.lpCard input[type=tel],.lpCard select,.lpCard textarea,.lpCard input:not([type]){background:#0b1220;border-color:#1e293b;color:#f1f5f9}
+.lpCard input:focus,.lpCard select:focus,.lpCard textarea:focus{background:#0b1220}
+.chip span{background:#0b1220;border-color:#1e293b;color:#cbd5e1}
+.chip input:checked+span{background:#1e3a8a;border-color:#3b82f6;color:#bfdbfe}
+.lpCard input[type=file]{background:#0b1220;border-color:#334155;color:#94a3b8}
+.lpCard input[type=file]:hover{background:#172554}
+#preview{border-color:#1e293b}
+#sizeHint{color:#93c5fd}
+}

@@ -1,0 +1,58 @@
+﻿*{box-sizing:border-box}
+body.authPage{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#0f172a;background:radial-gradient(1200px 600px at 10% -10%,#dbeafe 0,transparent 60%),radial-gradient(900px 500px at 110% 110%,#e0e7ff 0,transparent 60%),#f1f5f9}
+.authWrap{width:100%;max-width:420px}
+.authBack{display:inline-flex;align-items:center;gap:6px;color:#475569;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:14px;padding:6px 4px;border-radius:8px}
+.authBack svg{width:16px;height:16px;transition:transform .15s ease}
+.authBack:hover{color:#2563eb}
+.authBack:hover svg{transform:translateX(-3px)}
+.authCard{background:#fff;border-radius:20px;padding:32px 28px 26px;box-shadow:0 1px 2px rgba(15,23,42,.06),0 20px 50px rgba(15,23,42,.12);border:1px solid #e2e8f0}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.brandMark{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(37,99,235,.35)}
+.brandMark svg{width:24px;height:24px}
+.brandName{font-weight:800;font-size:18px;letter-spacing:-.2px}
+.authCard h1{margin:0 0 6px;font-size:26px;letter-spacing:-.4px}
+.sub{margin:0 0 22px;color:#64748b;font-size:15px;line-height:1.5}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:#334155;margin-bottom:6px}
+.authCard input{width:100%;padding:12px 14px;font-size:15px;font-family:inherit;color:#0f172a;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;outline:none;transition:border-color .15s ease,box-shadow .15s ease,background .15s ease}
+.authCard input::placeholder{color:#94a3b8}
+.authCard input:hover{border-color:#cbd5e1}
+.authCard input:focus{background:#fff;border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.15)}
+.pwWrap{position:relative}
+.pwWrap input{padding-right:46px}
+.pwToggle{position:absolute;top:50%;right:6px;transform:translateY(-50%);width:36px;height:36px;border:0;border-radius:9px;background:transparent;color:#64748b;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.pwToggle svg{width:20px;height:20px}
+.pwToggle:hover{background:#e2e8f0;color:#0f172a}
+.pwToggle:focus-visible{outline:3px solid #93c5fd}
+.btnMain,.btnAlt{width:100%;padding:13px 16px;border-radius:12px;border:0;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:transform .1s ease,box-shadow .15s ease,background .15s ease}
+.btnMain{margin-top:6px;color:#fff;background:linear-gradient(135deg,#2563eb,#4f46e5);box-shadow:0 8px 20px rgba(37,99,235,.35)}
+.btnMain:hover{box-shadow:0 10px 26px rgba(37,99,235,.45)}
+.btnAlt{margin-top:10px;color:#334155;background:#f1f5f9;border:1px solid #e2e8f0}
+.btnAlt:hover{background:#e2e8f0}
+.btnMain:active,.btnAlt:active{transform:scale(.98)}
+.btnMain:focus-visible,.btnAlt:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+#msg{min-height:20px;margin:14px 0 0;font-size:14px;font-weight:600;text-align:center;line-height:1.4}
+#msg:empty{display:none}
+.switch{margin:20px 0 0;padding-top:18px;border-top:1px solid #e2e8f0;text-align:center;font-size:14px;color:#64748b}
+.switch a{color:#2563eb;font-weight:700;text-decoration:none}
+.switch a:hover{text-decoration:underline}
+#otpSection .otpInfo{margin:0 0 14px;padding:12px 14px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;border-radius:12px;font-size:14px;line-height:1.5}
+#otp{text-align:center;font-size:26px;font-weight:700;letter-spacing:10px;padding:14px}
+#otp::placeholder{letter-spacing:4px;font-size:15px;font-weight:400}
+@media(max-width:420px){.authCard{padding:26px 20px 22px}}
+@media(prefers-color-scheme:dark){
+body.authPage{color:#f1f5f9;background:radial-gradient(1200px 600px at 10% -10%,#1e3a8a55 0,transparent 60%),#0b1220}
+.authCard{background:#111a2e;border-color:#1e293b;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.sub,.authBack,.switch{color:#94a3b8}
+.field label{color:#cbd5e1}
+.authCard input{background:#0b1220;border-color:#1e293b;color:#f1f5f9}
+.authCard input:focus{background:#0b1220}
+.pwToggle:hover{background:#1e293b;color:#f1f5f9}
+.btnAlt{background:#1e293b;color:#f1f5f9;border-color:#334155}
+.switch{border-color:#1e293b}
+#otpSection .otpInfo{background:#172554;border-color:#1e3a8a;color:#bfdbfe}
+}
+
+.forgotRow{margin:-4px 0 14px;text-align:right;font-size:13px}
+.forgotRow a{color:#2563eb;font-weight:600;text-decoration:none}
+.forgotRow a:hover{text-decoration:underline}
