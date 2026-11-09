@@ -99,8 +99,8 @@ $('listForm').addEventListener('submit', async (e) => {
       return;
     }
     if (!r.ok) throw new Error(j.error || 'Something went wrong');
-    show(j.message, true);
-    setTimeout(() => { location.href = isEdit ? 'my-listings.html' : 'index.html'; }, 1000);
+    show(isEdit ? j.message : 'Saved. Now pay to publish your listing.', true);
+    setTimeout(() => { location.href = 'my-listings.html'; }, 1000);
   } catch (err) {
     show(err.message);
     $('submitBtn').disabled = false;
@@ -126,3 +126,4 @@ $('size').addEventListener('input', () => {
   const m = s.match(/^(\d+(?:\.\d+)?)x(\d+(?:\.\d+)?)$/);
   if (m) $('sizeHint').textContent = ' ' + Number(m[1]) + ' m long \u00D7 ' + Number(m[2]) + ' m wide = ' + Math.round(m[1] * m[2]) + ' m\u00B2';
 });
+
