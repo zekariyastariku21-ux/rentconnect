@@ -1,4 +1,4 @@
-require('dotenv').config();
+﻿require('dotenv').config();
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const Database = require('better-sqlite3');
@@ -24,6 +24,11 @@ for (const category of DEFAULT_CATEGORIES) addDefaultCategory.run(category);
 const userCols = db.prepare('PRAGMA table_info(users)').all().map(column => column.name);
 if (!userCols.includes('role')) db.exec("ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'user'");
 
+const listingCols2 = db.prepare('PRAGMA table_info(listings)').all().map(c => c.name);
+if (!listingCols2.includes('rented_at')) db.exec('ALTER TABLE listings ADD COLUMN rented_at INTEGER');
+db.exec(`CREATE TRIGGER IF NOT EXISTS listing_stamp_rented AFTER UPDATE OF status ON listings
+WHEN NEW.status='rented' AND OLD.status<>'rented'
+BEGIN UPDATE listings SET rented_at = CAST(strftime('%s','now') AS INTEGER) * 1000 WHERE id = NEW.id; END;`);
 function requireAdmin(req, res, next) {
   const token = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
   try {
@@ -61,7 +66,7 @@ router.get('/admin/dashboard', requireAdmin, (req, res) => {
     ORDER BY u.id DESC
   `).all();
   const listings = db.prepare(`
-    SELECT l.id, l.title, l.category, l.city, l.area, l.price, l.status,
+    SELECT l.id, l.title, l.category, l.city, l.area, l.price, l.status, l.created_at AS createdAt,
       u.full_name AS ownerName
     FROM listings l
     LEFT JOIN users u ON u.id = l.user_id
@@ -82,6 +87,29 @@ router.get('/admin/dashboard', requireAdmin, (req, res) => {
   });
 });
 
+router.get('/admin/rented', requireAdmin, (req, res) => {
+  const rows = db.prepare(`
+    SELECT l.id, l.title, l.category, l.city, l.area, l.price, l.beds, l.baths,
+      l.created_at AS createdAt, l.rented_at AS rentedAt, l.contact_phone AS contactPhone,
+      u.full_name AS ownerName, u.phone AS ownerPhone
+    FROM listings l
+    LEFT JOIN users u ON u.id = l.user_id
+    WHERE l.status = 'rented'
+    ORDER BY l.id DESC
+  `).all();
+  res.json(rows);
+});
+router.get('/admin/payments', requireAdmin, (req, res) => {
+  const rows = db.prepare(`
+    SELECT p.id, p.tx_ref AS txRef, p.kind, p.amount, p.status, p.created_at AS createdAt,
+      l.title AS listingTitle, u.full_name AS ownerName, u.phone AS ownerPhone
+    FROM payments p
+    LEFT JOIN listings l ON l.id = p.listing_id
+    LEFT JOIN users u ON u.id = p.user_id
+    ORDER BY p.id DESC
+  `).all();
+  res.json(rows);
+});
 router.post('/admin/categories', requireAdmin, (req, res) => {
   const name = typeof req.body.name === 'string' ? req.body.name.trim().replace(/\s+/g, ' ') : '';
   if (!name || name.length > 40) {
@@ -121,3 +149,7 @@ router.use((error, req, res, next) => {
 });
 
 module.exports = router;
+
+
+
+

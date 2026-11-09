@@ -1,4 +1,4 @@
-const token = localStorage.getItem('token');
+﻿const token = localStorage.getItem('token');
 const categoryRows = document.getElementById('categoryRows');
 const categoryMessage = document.getElementById('categoryMessage');
 const dashboardMessage = document.getElementById('dashboardMessage');
@@ -109,9 +109,10 @@ function renderListings(search = '') {
         <td>ETB ${Number(listing.price).toLocaleString()} / mo</td>
         <td><span class="status ${listing.status === 'active' ? 'status-approved' : 'status-review'}">${escapeHtml(listing.status)}</span></td>
         <td>${escapeHtml(listing.ownerName || 'Unknown')}</td>
+<td>${listedDate(listing.createdAt)}</td>
       </tr>
     `).join('')
-    : '<tr><td class="empty-row" colspan="6">No listings match your search.</td></tr>';
+    : '<tr><td class="empty-row" colspan="7">No listings match your search.</td></tr>';
 }
 
 async function loadDashboard() {
@@ -171,3 +172,12 @@ if (!token) {
     showDashboardMessage(error.message, error.status !== 403);
   });
 }
+
+
+function listedDate(v) {
+  var n = Number(v);
+  if (!n) return '-';
+  var d = new Date(n < 1e12 ? n * 1000 : n);
+  return isNaN(d) ? '-' : d.toLocaleDateString();
+}
+

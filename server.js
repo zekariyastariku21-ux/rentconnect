@@ -5,6 +5,7 @@ const express = require('express');
 const authApp = express();
 authApp.use('/api/auth', require('./auth-routes'));
 authApp.use('/api/listings', require('./listings-routes'));
+authApp.use('/api/payments', require('./payments-routes'));
 authApp.use('/api', require('./admin-routes'));
 
 const hasCustomPort = Boolean(process.env.PORT);
@@ -98,5 +99,6 @@ server.on('listening', () => {
 });
 
 server.listen(port);
+
 
 

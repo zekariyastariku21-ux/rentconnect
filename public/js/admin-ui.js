@@ -35,3 +35,34 @@
     });
   }, true);
 })();
+
+
+// fixed header home button opens the sidebar as an overlay popup (closed by default)
+(function () {
+  var body = document.body;
+  var topbar = document.querySelector('.topbar');
+
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'home-toggle';
+  btn.setAttribute('aria-label', 'Open menu');
+  btn.setAttribute('aria-expanded', 'false');
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>';
+  if (topbar) topbar.insertBefore(btn, topbar.firstChild); else body.appendChild(btn);
+
+  var backdrop = document.createElement('div');
+  backdrop.className = 'sidebar-backdrop';
+  body.appendChild(backdrop);
+
+  function setOpen(open) {
+    body.classList.toggle('sidebar-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  btn.addEventListener('click', function () { setOpen(!body.classList.contains('sidebar-open')); });
+  backdrop.addEventListener('click', function () { setOpen(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+  document.querySelectorAll('.sidebar a').forEach(function (a) {
+    a.addEventListener('click', function () { setOpen(false); });
+  });
+})();

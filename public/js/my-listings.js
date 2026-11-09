@@ -48,7 +48,7 @@ function render(items) {
 
     const info = el('div', null, 'info');
     const h = el('h3', l.title);
-    h.appendChild(el('span', l.status === 'rented' ? 'Rented' : 'Active', 'badge ' + l.status));
+    h.appendChild(el('span', l.status === 'rented' ? 'Rented' : (l.status === 'unpaid' ? 'Unpaid' : 'Active'), 'badge ' + l.status));
     info.appendChild(h);
     info.appendChild(el('p', l.city + ', ' + l.area + ' \u2022 ' + l.category));
     info.appendChild(el('p', 'ETB ' + Number(l.price).toLocaleString() + ' / month \u2022 ' + l.beds + ' beds \u2022 ' + l.baths + ' baths'));
@@ -62,10 +62,15 @@ function render(items) {
       if (yes) location.href = 'list-property.html?edit=' + l.id;
     };
     actions.appendChild(edit);
-    if (l.status === 'rented') {
-      const b = el('button', 'List again', 'relist');
+    if (l.status === 'unpaid') {
+      const b = el('button', 'Pay to publish', 'relist');
       b.type = 'button';
-      b.onclick = function () { setStatus(l, 'active'); };
+      b.onclick = function () { rcPay(l.id, b); };
+      actions.appendChild(b);
+    } else if (l.status === 'rented') {
+      const b = el('button', 'Pay to list again', 'relist');
+      b.type = 'button';
+      b.onclick = function () { rcPay(l.id, b); };
       actions.appendChild(b);
     } else {
       const b = el('button', 'Mark as rented', 'rent');
@@ -92,4 +97,6 @@ async function load() {
   } catch (err) { $('list').textContent = ''; show(err.message); }
 }
 load();
+
+
 
