@@ -1,0 +1,18 @@
+:root{--pp-card:#fff;--pp-text:#111827;--pp-muted:#4b5563;--pp-border:#e5e7eb;--pp-ok:#0a7d3b;--pp-ok-bg:#e7f6ec;--pp-bad:#b42318;--pp-bad-bg:#fdecea;--pp-info:#1d4ed8;--pp-info-bg:#e8f0fe}
+@media (prefers-color-scheme: dark){:root{--pp-card:#171d25;--pp-text:#e8edf3;--pp-muted:#a3afbd;--pp-border:#2a3340;--pp-ok:#34c76e;--pp-ok-bg:#10281a;--pp-bad:#f0645a;--pp-bad-bg:#2a1513;--pp-info:#6ea0ff;--pp-info-bg:#14213d}}
+.pp-overlay{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(15,20,25,.55);backdrop-filter:blur(3px);opacity:0;transition:opacity .2s}
+.pp-overlay.pp-show{opacity:1}
+.pp-card{width:100%;max-width:400px;background:var(--pp-card);color:var(--pp-text);border:1px solid var(--pp-border);border-radius:16px;padding:28px 24px 22px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.35);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;transform:translateY(14px) scale(.96);transition:transform .22s cubic-bezier(.2,.9,.3,1.2)}
+.pp-show .pp-card{transform:none}
+.pp-icon{width:60px;height:60px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center}
+.pp-icon svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.pp-success .pp-icon{background:var(--pp-ok-bg);color:var(--pp-ok)}
+.pp-error .pp-icon{background:var(--pp-bad-bg);color:var(--pp-bad)}
+.pp-info .pp-icon{background:var(--pp-info-bg);color:var(--pp-info)}
+.pp-title{margin:0 0 6px;font-size:18px;font-weight:700}
+.pp-msg{margin:0 0 20px;color:var(--pp-muted);white-space:pre-line;word-break:break-word}
+.pp-btn{width:100%;border:0;border-radius:10px;padding:12px 18px;font:600 15px system-ui,sans-serif;color:#fff;cursor:pointer;transition:filter .15s,transform .05s}
+.pp-btn:hover{filter:brightness(.92)}.pp-btn:active{transform:scale(.98)}
+.pp-btn:focus-visible{outline:3px solid rgba(10,125,59,.35);outline-offset:2px}
+.pp-success .pp-btn{background:var(--pp-ok)}.pp-error .pp-btn{background:var(--pp-bad)}.pp-info .pp-btn{background:var(--pp-info)}
+@media (prefers-reduced-motion:reduce){.pp-overlay,.pp-card{transition:none}}

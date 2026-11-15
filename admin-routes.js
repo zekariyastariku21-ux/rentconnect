@@ -1,4 +1,4 @@
-﻿require('dotenv').config();
+require('dotenv').config();
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const Database = require('better-sqlite3');
@@ -143,13 +143,102 @@ router.delete('/admin/categories/:id', requireAdmin, (req, res) => {
   res.json({ message: 'Category removed.' });
 });
 
+// ---- Payment settings (admin) ----
+router.get('/admin/payment-settings', requireAdmin, (req, res) => {
+  const settings = require('./lib/paymentSettings');
+  const s = settings.get();
+  res.json({
+    chapaSecretKeyMasked: settings.mask(s.chapaSecretKey),
+    chapaWebhookSecretMasked: settings.mask(s.chapaWebhookSecret),
+    chapaEnabled: s.chapaEnabled,
+    listingFee: s.listingFee,
+    baseUrl: s.baseUrl,
+    fakePay: s.fakePay,
+    feeTiers: s.feeTiers,
+    productionLocked: process.env.NODE_ENV === 'production'
+  });
+});
+
+router.put('/admin/payment-settings', requireAdmin, (req, res) => {
+  const settings = require('./lib/paymentSettings');
+  const b = req.body || {};
+  const key = String(b.chapaSecretKey || '').trim();
+  if (key && !/^\S{16,300}$/.test(key)) {
+    return res.status(400).json({ error: 'Secret key looks invalid (no spaces, at least 16 characters).' });
+  }
+  if (b.listingFee !== undefined && b.listingFee !== '') {
+    const fee = Number(b.listingFee);
+    if (!Number.isFinite(fee) || fee <= 0) return res.status(400).json({ error: 'Listing fee must be a positive number.' });
+  }
+  settings.save({
+    chapaSecretKey: key,
+    chapaWebhookSecret: String(b.chapaWebhookSecret || ''),
+    chapaEnabled: b.chapaEnabled,
+    listingFee: b.listingFee === '' ? undefined : b.listingFee,
+    baseUrl: b.baseUrl,
+    fakePay: !!b.fakePay,
+    feeTiers: b.feeTiers
+  });
+  res.json({ ok: true });
+});
+
+// ---- Rental history ----
+try {
+  db.exec(`CREATE TABLE IF NOT EXISTS rental_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    listing_id INTEGER NOT NULL,
+    owner_id INTEGER,
+    title TEXT,
+    price INTEGER,
+    event TEXT NOT NULL,
+    changed_at INTEGER NOT NULL
+  )`);
+  db.exec(`CREATE TRIGGER IF NOT EXISTS rental_history_log AFTER UPDATE OF status ON listings
+    WHEN NEW.status <> OLD.status AND (NEW.status = 'rented' OR OLD.status = 'rented')
+    BEGIN
+      INSERT INTO rental_history (listing_id, owner_id, title, price, event, changed_at)
+      VALUES (NEW.id, NEW.user_id, NEW.title, NEW.price,
+        CASE WHEN NEW.status = 'rented' THEN 'rented' ELSE 'relisted' END,
+        CAST(strftime('%s','now') AS INTEGER) * 1000);
+    END`);
+  db.exec(`INSERT INTO rental_history (listing_id, owner_id, title, price, event, changed_at)
+    SELECT id, user_id, title, price, 'rented', COALESCE(created_at, CAST(strftime('%s','now') AS INTEGER) * 1000)
+    FROM listings
+    WHERE status = 'rented' AND NOT EXISTS (SELECT 1 FROM rental_history h WHERE h.listing_id = listings.id)`);
+} catch (e) { console.error('Rental history setup failed:', e.message); }
+
+router.get('/admin/rental-history', requireAdmin, (req, res) => {
+  const rows = db.prepare(`
+    SELECT h.id, h.listing_id AS listingId, h.title, h.price, h.event, h.changed_at AS changedAt,
+           u.full_name AS owner, u.phone AS ownerPhone,
+           (SELECT status FROM listings l WHERE l.id = h.listing_id) AS currentStatus
+    FROM rental_history h LEFT JOIN users u ON u.id = h.owner_id
+    ORDER BY h.changed_at DESC, h.id DESC LIMIT 1000`).all();
+  const totals = db.prepare(`SELECT
+      SUM(event = 'rented') AS rented, SUM(event = 'relisted') AS relisted,
+      COUNT(DISTINCT listing_id) AS listings FROM rental_history`).get();
+  res.json({ rows, totals: { rented: totals.rented || 0, relisted: totals.relisted || 0, listings: totals.listings || 0 } });
+});
+
+// ---- Telebirr settings (admin) ----
+router.get('/admin/telebirr-settings', requireAdmin, (req, res) => {
+  res.json(require('./lib/telebirr').publicView());
+});
+router.put('/admin/telebirr-settings', requireAdmin, (req, res) => {
+  try { require('./lib/telebirr').save(req.body || {}); res.json({ ok: true }); }
+  catch (e) { res.status(400).json({ error: e.message }); }
+});
+router.post('/admin/telebirr-settings/test', requireAdmin, async (req, res) => {
+  try { await require('./lib/telebirr').fabricToken(); res.json({ ok: true, message: 'Connected: Telebirr issued an access token.' }); }
+  catch (e) { res.status(400).json({ error: e.message }); }
+});
+
 router.use((error, req, res, next) => {
   console.error('Admin API error:', error);
   res.status(500).json({ error: 'Server error.' });
 });
 
 module.exports = router;
-
 
 
 

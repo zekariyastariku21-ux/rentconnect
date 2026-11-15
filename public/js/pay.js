@@ -2,16 +2,19 @@
   var token = localStorage.getItem('token');
   var H = { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token };
 
-  window.rcPay = async function (listingId, btn) {
+  window.rcPay = async function (listingId, btn, provider) {
+    var method = provider === 'telebirr' ? 'telebirr' : 'chapa';
+    var originalText = btn ? btn.textContent : '';
     if (btn) { btn.disabled = true; btn.textContent = 'Redirecting...'; }
     try {
-      var r = await fetch('/api/payments/checkout', { method: 'POST', headers: H, body: JSON.stringify({ listingId: listingId }) });
+      var endpoint = method === 'telebirr' ? '/api/payments/telebirr/checkout' : '/api/payments/checkout';
+      var r = await fetch(endpoint, { method: 'POST', headers: H, body: JSON.stringify({ listingId: listingId }) });
       var j = await r.json();
       if (!r.ok) throw new Error(j.error || 'Payment failed');
       if (j.fake) { alert(j.message); location.reload(); return; } location.href = j.checkoutUrl;
     } catch (e) {
       alert(e.message);
-      if (btn) { btn.disabled = false; btn.textContent = 'Pay to publish'; }
+      if (btn) { btn.disabled = false; btn.textContent = originalText; }
     }
   };
 

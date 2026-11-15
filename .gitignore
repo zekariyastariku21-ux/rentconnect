@@ -10,3 +10,7 @@ Thumbs.db
 
 auth.db
 .env
+
+data/payment-settings.json
+
+data/telebirr-settings.json

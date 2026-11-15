@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapa payment settings · RentConnect</title>
+<style>
+:root{
+  --bg:#f4f6f9; --card:#fff; --text:#111827; --muted:#6b7280; --border:#e5e7eb;
+  --brand:#0a7d3b; --brand-d:#086630; --danger:#b42318; --danger-bg:#fef3f2;
+  --warn:#92400e; --warn-bg:#fffbeb; --ok-bg:#ecfdf3; --ring:rgba(10,125,59,.25);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0f1419; --card:#171d25; --text:#e8edf3; --muted:#93a0b0; --border:#2a3340;
+    --danger-bg:#2a1513; --warn-bg:#2b2210; --ok-bg:#10281a; --ring:rgba(52,199,110,.3); --brand:#16a34a; --brand-d:#15803d; }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:17px;margin:0;font-weight:700}
+.back{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+.back:hover{color:var(--brand)}
+.wrap{max-width:720px;margin:32px auto;padding:0 16px}
+.page-title{margin:0 0 4px;font-size:24px;font-weight:700}
+.page-sub{margin:0 0 24px;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.card h2{margin:0 0 4px;font-size:16px;font-weight:700}
+.card .desc{margin:0 0 18px;color:var(--muted);font-size:14px}
+.field{margin-bottom:18px}.field:last-child{margin-bottom:0}
+label.lbl{display:flex;align-items:center;justify-content:space-between;font-weight:600;font-size:14px;margin-bottom:6px}
+.hint{display:block;margin-top:6px;color:var(--muted);font-size:13px}
+.input-wrap{position:relative;display:flex}
+input[type=text],input[type=password]{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font:inherit;transition:border-color .15s,box-shadow .15s}
+input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--ring)}
+.input-wrap input{padding-right:64px}
+.toggle-vis{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:var(--brand);font-weight:600;font-size:13px;cursor:pointer;padding:6px 8px;border-radius:6px}
+.toggle-vis:hover{background:var(--ok-bg)}
+.prefix{display:flex}.prefix span{padding:10px 12px;border:1px solid var(--border);border-right:0;border-radius:8px 0 0 8px;background:var(--bg);color:var(--muted);font-weight:600}
+.prefix input{border-radius:0 8px 8px 0}
+.badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.badge.test{background:var(--warn-bg);color:var(--warn)}
+.badge.live{background:var(--ok-bg);color:var(--brand)}
+.badge.none{background:var(--danger-bg);color:var(--danger)}
+.switch-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.switch-row .t{font-weight:600}.switch-row .s{color:var(--muted);font-size:13px}
+.switch{position:relative;width:44px;height:24px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;inset:0;background:#cbd5e1;border-radius:999px;cursor:pointer;transition:.2s}
+.slider:before{content:"";position:absolute;height:18px;width:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+.switch input:checked + .slider{background:var(--danger)}
+.switch.positive input:checked + .slider{background:var(--brand)}
+.switch input:checked + .slider:before{transform:translateX(20px)}
+.switch input:focus-visible + .slider{box-shadow:0 0 0 3px var(--ring)}
+.alert{display:flex;gap:10px;padding:12px 14px;border-radius:8px;margin-bottom:20px;font-size:14px}
+.alert.warn{background:var(--warn-bg);color:var(--warn)}
+.alert.err{background:var(--danger-bg);color:var(--danger)}
+.actions{display:flex;justify-content:flex-end;gap:10px}
+.btn{border:0;border-radius:8px;padding:11px 22px;font:600 14px system-ui,sans-serif;cursor:pointer;background:var(--brand);color:#fff;transition:background .15s}
+.btn:hover{background:var(--brand-d)}.btn:disabled{opacity:.6;cursor:wait}
+.btn.secondary{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn.secondary:hover{background:var(--bg)}
+.toast{position:fixed;right:20px;bottom:20px;padding:12px 18px;border-radius:8px;color:#fff;font-weight:600;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none}
+.toast.show{opacity:1;transform:none}.toast.ok{background:#0a7d3b}.toast.bad{background:#b42318}
+@media(max-width:520px){.card{padding:18px}.actions{flex-direction:column-reverse}.btn{width:100%}}
+.tier-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.tier-row select,.tier-row input,.tier-test input{padding:9px 10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font:inherit}
+.tier-row .t-val,.tier-row .t-fee{width:110px}
+.tier-if{color:var(--muted);font-size:14px}
+.tier-x{border:0;background:transparent;color:var(--danger);cursor:pointer;font-size:16px;padding:6px 8px;border-radius:6px}
+.tier-x:hover{background:var(--danger-bg)}
+.tier-empty{color:var(--muted);font-size:14px;margin:0 0 12px}
+.tier-test{margin-top:18px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#testOut{font-weight:700;color:var(--brand)}</style></head><body>
+<header class="topbar">
+  <h1>RentConnect Admin</h1>
+  <a class="back" href="/admin.html">&larr; Back to dashboard</a>
+</header>
+
+<main class="wrap">
+  <h2 class="page-title">Chapa payment settings</h2>
+  <p class="page-sub">Configure Chapa credentials and the listing fee. Changes apply immediately, no restart needed.</p>
+
+  <div id="alert"></div>
+
+  <div id="tokenCard" class="card" hidden>
+    <h2>Admin sign-in required</h2>
+    <p class="desc">Log in as an admin in this browser, or paste your admin token.</p>
+    <div class="field"><input type="password" id="token" autocomplete="off" placeholder="Admin token"></div>
+    <div class="actions"><button type="button" class="btn" id="load">Load settings</button></div>
+  </div>
+
+  <form id="f" hidden>
+    <section class="card">
+      <h2>Chapa credentials</h2>
+      <p class="desc">Find these in your Chapa dashboard under Settings &rarr; API Keys.</p>
+      <div class="field">
+        <label class="lbl" for="chapaSecretKey">Secret key <span id="keyBadge" class="badge none">Not set</span></label>
+        <div class="input-wrap">
+          <input type="password" id="chapaSecretKey" autocomplete="off" placeholder="Paste your Chapa secret key">
+          <button type="button" class="toggle-vis" data-for="chapaSecretKey">Show</button>
+        </div>
+        <span class="hint" id="keyHint"></span>
+      </div>
+      <div class="field">
+        <label class="lbl" for="chapaWebhookSecret">Webhook secret <span class="hint" style="margin:0">Optional</span></label>
+        <div class="input-wrap">
+          <input type="password" id="chapaWebhookSecret" autocomplete="off">
+          <button type="button" class="toggle-vis" data-for="chapaWebhookSecret">Show</button>
+        </div>
+        <span class="hint" id="whHint"></span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Pricing &amp; URLs</h2>
+      <p class="desc">What owners pay to publish a listing, and where Chapa sends users back.</p>
+      <div class="field">
+        <label class="lbl" for="listingFee">Default listing fee <span class="hint" style="margin:0">Used when no rule matches</span></label>
+        <div class="prefix"><span>ETB</span><input type="text" id="listingFee" inputmode="decimal" placeholder="2000"></div>
+      </div>
+      <div class="field">
+        <label class="lbl" for="baseUrl">Base URL</label>
+        <input type="text" id="baseUrl" placeholder="https://yourdomain.com">
+        <span class="hint">Must be a public https address for Chapa callbacks to reach you.</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Fee rules by listing price</h2>
+      <p class="desc">Rules are checked top to bottom and the first match sets the fee. If none match, the default listing fee below applies. Example: price less than 5000 &rarr; 50 ETB; price at least 5000 &rarr; 2% of price.</p>
+      <div id="tiers"></div>
+      <button type="button" class="btn secondary" id="addTier">+ Add rule</button>
+      <div class="tier-test">
+        <label for="testPrice">Try a price (ETB)</label>
+        <input type="text" id="testPrice" inputmode="decimal" placeholder="e.g. 15000">
+        <span id="testOut"></span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Chapa payments</h2>
+      <p class="desc">Control whether owners can choose Chapa to pay listing fees.</p>
+      <div class="switch-row">
+        <div><div class="t">Enable Chapa</div><div class="s">When off, owners cannot start new Chapa payments.</div></div>
+        <label class="switch positive"><input type="checkbox" id="chapaEnabled"><span class="slider"></span></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Test mode</h2>
+      <p class="desc">Fake pay skips Chapa entirely.</p>
+      <div class="switch-row">
+        <div><div class="t">Fake pay (test mode)</div><div class="s" id="prodNote">When on, anyone can publish for free. Turn off for real payments.</div></div>
+        <label class="switch"><input type="checkbox" id="fakePay"><span class="slider"></span></label>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button type="button" class="btn secondary" id="reload">Reset</button>
+      <button type="submit" class="btn" id="save">Save changes</button>
+    </div>
+  </form>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+function toast(text, ok) {
+  const t = $('toast'); t.textContent = text; t.className = 'toast show ' + (ok ? 'ok' : 'bad');
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.className = 'toast', 3000);
+}
+function alertBox(text, cls) { $('alert').innerHTML = text ? '<div class="alert ' + cls + '"></div>' : ''; if (text) $('alert').firstChild.textContent = text; }
+function findToken() {
+  for (const store of [localStorage, sessionStorage]) {
+    for (let i = 0; i < store.length; i++) {
+      let v = store.getItem(store.key(i)) || '';
+      try { const j = JSON.parse(v); if (j && typeof j === 'object') v = j.token || j.accessToken || v; } catch (e) {}
+      if (typeof v === 'string' && /^eyJ[\w-]+\.[\w-]+\.[\w-]+$/.test(v)) return v;
+    }
+  }
+  return '';
+}
+let token = findToken();
+async function api(method, body) {
+  const r = await fetch('/api/admin/payment-settings', {
+    method,
+    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.error || ('Request failed (' + r.status + ')'));
+  return data;
+}
+function badge(masked) {
+  const b = $('keyBadge');
+  if (/^[A-Z_]*TEST/i.test(masked)) { b.textContent = 'Test key'; b.className = 'badge test'; }
+  else if (/^(?!\(not set)/.test(masked)) { b.textContent = 'Live key'; b.className = 'badge live'; }
+  else { b.textContent = 'Not set'; b.className = 'badge none'; }
+}
+async function load() {
+  try {
+    const s = await api('GET');
+    $('tokenCard').hidden = true; $('f').hidden = false;
+    badge(s.chapaSecretKeyMasked);
+    $('keyHint').textContent = 'Current: ' + s.chapaSecretKeyMasked + ' · leave blank to keep it.';
+    $('whHint').textContent = 'Current: ' + s.chapaWebhookSecretMasked + ' · leave blank to keep it.';
+    $('listingFee').value = s.listingFee || '';
+    $('baseUrl').value = s.baseUrl || '';
+    $('chapaEnabled').checked = s.chapaEnabled !== false;
+    $('fakePay').checked = !!s.fakePay;
+    renderTiers(s.feeTiers || []);
+    $('fakePay').disabled = !!s.productionLocked;
+    if (s.productionLocked) $('prodNote').textContent = 'NODE_ENV=production: fake pay is always disabled.';
+    alertBox(s.fakePay && !s.productionLocked ? 'Fake pay is ON. Listings publish without real payment.' : '', 'warn');
+  } catch (e) {
+    $('f').hidden = true; $('tokenCard').hidden = false;
+    alertBox(e.message, 'err');
+  }
+}
+document.querySelectorAll('.toggle-vis').forEach((b) => b.onclick = () => {
+  const i = $(b.dataset.for); const show = i.type === 'password';
+  i.type = show ? 'text' : 'password'; b.textContent = show ? 'Hide' : 'Show';
+});
+$('load').onclick = () => { token = $('token').value.trim(); load(); };
+$('reload').onclick = () => load();
+$('f').onsubmit = async (ev) => {
+  ev.preventDefault();
+  const btn = $('save'); btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    await api('PUT', {
+      chapaSecretKey: $('chapaSecretKey').value, chapaWebhookSecret: $('chapaWebhookSecret').value,
+      chapaEnabled: $('chapaEnabled').checked, listingFee: $('listingFee').value,
+      baseUrl: $('baseUrl').value, fakePay: $('fakePay').checked, feeTiers: readTiers()
+    });
+    $('chapaSecretKey').value = ''; $('chapaWebhookSecret').value = '';
+    await load(); toast('Settings saved', true);
+  } catch (e) { toast(e.message, false); }
+  btn.disabled = false; btn.textContent = 'Save changes';
+};
+const OPS = { lt: 'is less than', lte: 'is at most', gt: 'is greater than', gte: 'is at least' };
+function tierRow(t) {
+  const d = document.createElement('div'); d.className = 'tier-row';
+  d.innerHTML = '<span class="tier-if">If price</span><select class="t-op">' +
+    Object.keys(OPS).map((k) => '<option value="' + k + '">' + OPS[k] + '</option>').join('') +
+    '</select><input type="text" class="t-val" inputmode="decimal" placeholder="ETB">' +
+    '<span class="tier-if">then fee</span><input type="text" class="t-fee" inputmode="decimal" placeholder="Amount">' +
+    '<select class="t-type"><option value="fixed">ETB</option><option value="percent">% of price</option></select>' +
+    '<button type="button" class="tier-x" title="Remove rule">&#10005;</button>';
+  d.querySelector('.t-op').value = t.op || 'lt';
+  d.querySelector('.t-val').value = t.value != null ? t.value : '';
+  d.querySelector('.t-fee').value = t.fee != null ? t.fee : '';
+  d.querySelector('.t-type').value = t.type || 'fixed';
+  d.querySelector('.tier-x').onclick = () => { d.remove(); tierEmpty(); previewFee(); };
+  d.addEventListener('input', previewFee);
+  return d;
+}
+function tierEmpty() {
+  const box = $('tiers'); const has = box.querySelector('.tier-row');
+  let e = box.querySelector('.tier-empty');
+  if (!has && !e) { e = document.createElement('p'); e.className = 'tier-empty'; e.textContent = 'No rules yet. Every listing pays the default fee.'; box.appendChild(e); }
+  if (has && e) e.remove();
+}
+function renderTiers(list) {
+  $('tiers').innerHTML = '';
+  list.forEach((t) => $('tiers').appendChild(tierRow(t)));
+  tierEmpty(); previewFee();
+}
+function collectTiers(strict) {
+  const out = [];
+  document.querySelectorAll('#tiers .tier-row').forEach((r) => {
+    const value = r.querySelector('.t-val').value.trim(), fee = r.querySelector('.t-fee').value.trim();
+    if (!value && !fee) return;
+    if (isNaN(Number(value)) || isNaN(Number(fee)) || !value || !fee || Number(fee) <= 0) {
+      if (strict) throw new Error('Fill in a valid price and fee for every rule, or remove it.');
+      return;
+    }
+    const type = r.querySelector('.t-type').value;
+    if (type === 'percent' && Number(fee) > 100) { if (strict) throw new Error('A percentage fee cannot exceed 100.'); return; }
+    out.push({ op: r.querySelector('.t-op').value, value: Number(value), type: type, fee: Number(fee) });
+  });
+  return out;
+}
+function readTiers() { return collectTiers(true); }
+function previewFee() {
+  const p = Number($('testPrice').value);
+  if (!$('testPrice').value.trim() || isNaN(p)) { $('testOut').textContent = ''; return; }
+  const base = Number($('listingFee').value) || 2000;
+  let fee = base;
+  for (const t of collectTiers(false)) {
+    const hit = t.op === 'lt' ? p < t.value : t.op === 'lte' ? p <= t.value : t.op === 'gt' ? p > t.value : p >= t.value;
+    if (hit) { fee = Math.max(1, Math.round((t.type === 'percent' ? p * t.fee / 100 : t.fee) * 100) / 100); break; }
+  }
+  $('testOut').textContent = 'Fee: ETB ' + fee.toLocaleString();
+}
+$('addTier').onclick = () => { $('tiers').appendChild(tierRow({})); tierEmpty(); };
+$('testPrice').oninput = previewFee;
+$('listingFee').addEventListener('input', previewFee);
+load();
+</script></body></html>

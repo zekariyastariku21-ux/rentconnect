@@ -30,7 +30,31 @@ async function setStatus(l, status) {
   } catch (err) { show(err.message); }
 }
 
-function render(items) {
+function addPaymentActions(actions, listing, methods) {
+  const label = listing.status === 'rented' ? 'Pay to list again' : 'Pay to publish';
+  const addButton = (text, provider, disabled) => {
+    const b = el('button', text, 'relist');
+    b.type = 'button';
+    b.disabled = !!disabled;
+    if (provider) b.onclick = function () { rcPay(listing.id, b, provider); };
+    actions.appendChild(b);
+  };
+
+  if (!methods) {
+    addButton('Payment options unavailable', null, true);
+  } else if (methods.chapa && methods.telebirr) {
+    addButton(label + ' with Chapa', 'chapa', false);
+    addButton(label + ' with Telebirr', 'telebirr', false);
+  } else if (methods.chapa) {
+    addButton(label + ' with Chapa', 'chapa', false);
+  } else if (methods.telebirr) {
+    addButton(label + ' with Telebirr', 'telebirr', false);
+  } else {
+    addButton('Payments unavailable', null, true);
+  }
+}
+
+function render(items, methods) {
   const box = $('list');
   box.innerHTML = '';
   if (!items.length) {
@@ -62,16 +86,8 @@ function render(items) {
       if (yes) location.href = 'list-property.html?edit=' + l.id;
     };
     actions.appendChild(edit);
-    if (l.status === 'unpaid') {
-      const b = el('button', 'Pay to publish', 'relist');
-      b.type = 'button';
-      b.onclick = function () { rcPay(l.id, b); };
-      actions.appendChild(b);
-    } else if (l.status === 'rented') {
-      const b = el('button', 'Pay to list again', 'relist');
-      b.type = 'button';
-      b.onclick = function () { rcPay(l.id, b); };
-      actions.appendChild(b);
+    if (l.status === 'unpaid' || l.status === 'rented') {
+      addPaymentActions(actions, l, methods);
     } else {
       const b = el('button', 'Mark as rented', 'rent');
       b.type = 'button';
@@ -93,10 +109,17 @@ async function load() {
       return;
     }
     if (!r.ok) throw new Error('Could not load your listings.');
-    render(await r.json());
+    const items = await r.json();
+    let methods = null;
+    try {
+      const mr = await fetch('/api/payments/methods');
+      if (!mr.ok) throw new Error('Could not load payment options.');
+      methods = await mr.json();
+    } catch (err) {
+      show(err.message + ' Refresh the page to try again.');
+    }
+    render(items, methods);
   } catch (err) { $('list').textContent = ''; show(err.message); }
 }
 load();
-
-
 
