@@ -14,3 +14,18 @@ auth.db
 data/payment-settings.json
 
 data/telebirr-settings.json
+
+# Backup files
+*.bak
+*.keybak*
+*.rhbak
+*.tbbak
+*.defbak
+*.dashbak
+*.feebak
+*.ppbak
+*.namebak
+*.modbak
+
+
+*.rhmodbak
